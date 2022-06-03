@@ -10,6 +10,7 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="../animations.css" />
     <link rel="stylesheet" href="../style.css" />
     <title>MHB - Account</title>
   </head>
@@ -94,22 +95,39 @@
           </div>
         </aside>
         <main class="d-flex align-items-center justify-content-center">
-          <div class="container-gray w-50 h-75 d-flex flex-column align-items-start">
-            <h2>Create a new Card</h2>
-            <label for="type" class="text-register font-two mt-2">Select card type</label>
+          <div
+            class="container-gray w-50 h-75 d-flex flex-column align-items-start grandient slide-bottom"
+          >
+            <h2 class="font-four">Create a new Card</h2>
+            <label for="type" class="textForm font-four mt-2"
+              >Select card type</label
+            >
 
-            <select class="btn-login w-100 mt-2" name="CardType" id="type" v-model="type">
+            <select class="select" name="CardType" id="type" v-model="type">
               <option value="DEBIT">Debit</option>
               <option value="CREDIT">Credit</option>
             </select>
-            <label for="Color" class="text-register font-two">Select card color</label>
-            <select class="btn-login w-100 mt-2" name="CardType" id="Color" value="" v-model="color">
+            <label for="Color" class="textForm font-four"
+              >Select card color</label
+            >
+            <select
+              class="select"
+              name="CardType"
+              id="Color"
+              value=""
+              v-model="color"
+            >
               <option value="GOLD">Gold</option>
               <option value="SILVER">Silver</option>
               <option value="TITANIUM">Titanium</option>
             </select>
-              <input class="btn-login w-100 mt-2" type="button" value="Create" @click="createCard">
-          
+
+            <input
+              class="select mt-3 w-25"
+              type="button"
+              value="Create"
+              @click="createCard"
+            />
           </div>
         </main>
       </div>

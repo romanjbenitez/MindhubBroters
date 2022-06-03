@@ -87,6 +87,9 @@ Vue.createApp({
         .post("/api/logout")
         .then((response) => window.location.replace("./index.html"));
     },
+    doTransactions(){
+      window.location.href = "/web/transfers.html"
+    }
   },
 
   computed: {

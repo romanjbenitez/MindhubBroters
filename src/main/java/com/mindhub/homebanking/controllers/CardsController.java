@@ -32,33 +32,33 @@ public class CardsController {
 
     @RequestMapping(path = "/clients/current/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> addNewCard(
-            @RequestParam CardColor color, @RequestParam CardType type, Authentication authentication ){
-        if(repo.findByEmail(authentication.getName()).getCards().stream().filter(card -> card.getType().equals(DEBIT)).count() == 3 && type == DEBIT){
+            @RequestParam CardColor color, @RequestParam CardType type, Authentication authentication) {
+        if (repo.findByEmail(authentication.getName()).getCards().stream().filter(card -> card.getType().equals(DEBIT)).count() == 3 && type == DEBIT) {
             return new ResponseEntity<Object>("You already have three debit cards", HttpStatus.FORBIDDEN);
-        }
-        else if(repo.findByEmail(authentication.getName()).getCards().stream().filter(card -> card.getType().equals(CREDIT)).count() == 3 && type == CREDIT){
+        } else if (repo.findByEmail(authentication.getName()).getCards().stream().filter(card -> card.getType().equals(CREDIT)).count() == 3 && type == CREDIT) {
             return new ResponseEntity<Object>("You already have three credit cards", HttpStatus.FORBIDDEN);
         }
 
         Set<String> numbersOfCards = cardRepository.findAll().stream().map(Card::getNumber).collect(Collectors.toSet());
-        String cardNumber = getRandomNumber(1000 , 9999) + "-" +
-                            getRandomNumber(1000 , 9999) + "-" +
-                            getRandomNumber(1000 , 9999) + "-" +
-                            getRandomNumber(1000 , 9999);
-        while(numbersOfCards.contains(cardNumber)){
-            cardNumber =getRandomNumber(1000 , 9999) + "-" +
-                        getRandomNumber(1000 , 9999) + "-" +
-                        getRandomNumber(1000 , 9999) + "-" +
-                        getRandomNumber(1000 , 9999);
+        String cardNumber = getRandomNumber(1000, 9999) + "-" +
+                getRandomNumber(1000, 9999) + "-" +
+                getRandomNumber(1000, 9999) + "-" +
+                getRandomNumber(1000, 9999);
+        while (numbersOfCards.contains(cardNumber)) {
+            cardNumber = getRandomNumber(1000, 9999) + "-" +
+                    getRandomNumber(1000, 9999) + "-" +
+                    getRandomNumber(1000, 9999) + "-" +
+                    getRandomNumber(1000, 9999);
         }
         String cardHolder = repo.findByEmail(authentication.getName()).getFirstName() + repo.findByEmail(authentication.getName()).getLastName();
-        Card newCard = new Card(type , color,cardHolder ,cardNumber,getRandomNumber(100, 999) , LocalDateTime.now(), LocalDateTime.now().plusYears(5));
+        Card newCard = new Card(type, color, cardHolder, cardNumber, getRandomNumber(100, 999), LocalDateTime.now(), LocalDateTime.now().plusYears(5));
         repo.findByEmail(authentication.getName()).addCard(newCard);
         cardRepository.save(newCard);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
     public int getRandomNumber(int min, int max) {
-        return (int)((Math.random() * (max - min)) + min);
+        return (int) ((Math.random() * (max - min)) + min);
     }
 }

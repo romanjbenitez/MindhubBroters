@@ -3,7 +3,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
@@ -19,6 +18,11 @@ public class Client {
     private String email;
 
     private String password;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private String  imgProfile;;
+
+
 
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
     private Set<ClientLoan> clientLoans;
@@ -107,4 +111,11 @@ public class Client {
         return clientLoans.stream().map(ClientLoan::getLoan).collect(toList());
     }
 
+    public String getImgProfile() {
+        return imgProfile;
+    }
+
+    public void setImgProfile(String imgProfile) {
+        this.imgProfile = imgProfile;
+    }
 }

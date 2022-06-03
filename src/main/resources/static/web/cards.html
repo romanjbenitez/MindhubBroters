@@ -117,7 +117,8 @@
                   <div class="blackBard"></div>
                   <div class="cvv-whiteBard">
                     <div class="whiteBard"></div>
-                    <div class="cvv"><span>{{card.cvv}}</span></div>
+                    <div class="cvv" v-if="hide === 'show'" ><span>{{card.cvv}}</span></div>
+                    <div class="cvv" v-else="hide === 'show'" ><span>***</span></div>
                   </div>
                 </div>
                 <div class="cardMindhub animation front">
@@ -170,7 +171,8 @@
                   <div class="blackBard"></div>
                   <div class="cvv-whiteBard">
                     <div class="whiteBard"></div>
-                    <div class="cvv"><span>{{card.cvv}}</span></div>
+                    <div class="cvv" v-if="hide === 'show'" ><span>{{card.cvv}}</span></div>
+                    <div class="cvv" v-else="hide === 'show'" ><span>***</span></div>
                   </div>
                 </div>
                 <div class="cardMindhub animation front">

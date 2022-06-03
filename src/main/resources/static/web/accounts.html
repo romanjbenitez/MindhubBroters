@@ -10,12 +10,13 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="../animations.css" />
     <link rel="stylesheet" href="../style.css" />
     <title>MHB - Accounts</title>
   </head>
   <body>
     <div id="app">
-      <div class="d-flex container-sections">
+      <div class="d-flex container-sections" >
         <nav class="d-flex">
           <div class="container-img d-flex justify-content-center">
             <img src="../assets/img/Logo.png" alt="logo" srcset="" id="logo" />
@@ -61,7 +62,7 @@
               </div>
             </div>
           </div>
-          <div class="mt-4">
+          <div class="mt-4 scale-up-center">
             <p class="font-five">My Saving</p>
             <div v-for="account in accounts">
               <a
@@ -93,8 +94,8 @@
             />
           </div>
         </aside>
-        <main>
-          <div class="d-flex justify-content-between">
+        <main class="">
+          <div class="d-flex justify-content-between ">
             <h2 class="font-one">Hi, {{firstName}}</h2>
             <div class="user-card">
               <i class="fa-regular fa-bell bell font-two"></i>
@@ -110,7 +111,7 @@
           <span class="font-two">Today, {{day}} {{month}} {{year}} </span>
           <div class="d-flex column">
             <div class="w-75 me-3 responsive-w">
-              <div class="d-flex container-gray none">
+              <div class="d-flex container-gray none scale-up-center delayOne">
                 <div class="boxes">
                   <i class="fa-solid fa-wallet"></i>
                   <p class="font-two">Income</p>
@@ -132,7 +133,7 @@
                   <p class="fs-4">$5<small class="fs-6">.3K</small></p>
                 </div>
               </div>
-              <div class="container-gray">
+              <div class="container-gray scale-up-center delayThree">
                 <h3 class="font-one">Recent Transactions</h3>
                 <div class="scrol">
                   <div v-for="transaction in transactions" class="transaction">
@@ -162,7 +163,7 @@
               </div>
             </div>
             <div>
-              <div class="d-flex flex-column container-gray padding-bottom">
+              <div class="d-flex flex-column container-gray padding-bottom scale-up-center delayTwo">
                 <p class="fs-3 font-one m-0">My cards</p>
                 <a href="./cards.html" class="cardMindhub">
                   <div class="d-flex justify-content-between h-50">
@@ -180,9 +181,9 @@
                   </div>
                 </a>
               </div>
-              <div class="container-gray">
+              <div class="container-gray scale-up-center delayFour">
                 <p class="fs-3 font-one">Quick Transactions</p>
-                <div class="actions">
+                <div class="actions" @click="doTransactions">
                   <i class="fa-solid fa-money-bill-transfer"></i>
                   <p>Transfers</p>
                 </div>

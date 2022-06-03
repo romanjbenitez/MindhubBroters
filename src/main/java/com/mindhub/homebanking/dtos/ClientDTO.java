@@ -2,6 +2,7 @@ package com.mindhub.homebanking.dtos;
 
 import com.mindhub.homebanking.models.Client;
 
+import java.sql.Blob;
 import java.util.Set;
 
 
@@ -16,6 +17,7 @@ public class ClientDTO {
     private Set<AccountDTO> accounts;
     private Set<ClientLoanDTO> loans;
     private Set<CardDTO> cards;
+    private String imgProfile;
 
     public ClientDTO() {
     }
@@ -35,7 +37,7 @@ public class ClientDTO {
         this.loans = client.getClientLoans().stream().map(ClientLoanDTO::new).collect(toSet());
 
         this.cards = client.getCards().stream().map(CardDTO::new).collect(toSet());
-
+        this.imgProfile = client.getImgProfile();
     }
 
     public long getId() {
@@ -45,6 +47,7 @@ public class ClientDTO {
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -52,6 +55,7 @@ public class ClientDTO {
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -59,6 +63,7 @@ public class ClientDTO {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -66,14 +71,33 @@ public class ClientDTO {
     public Set<AccountDTO> getAccounts() {
         return accounts;
     }
+
     public void setAccounts(Set<AccountDTO> accounts) {
         this.accounts = accounts;
     }
 
-    public Set<ClientLoanDTO> getLoans() {return loans;}
-    public void setLoans(Set<ClientLoanDTO> loans) {this.loans = loans;}
+    public String getImgProfile() {
+        return imgProfile;
+    }
 
-    public Set<CardDTO> getCards() {return cards;}
-    public void setCards(Set<CardDTO> loans) {this.cards = cards;}
+    public void setImgProfile(String imgProfile) {
+        this.imgProfile = imgProfile;
+    }
+
+    public Set<ClientLoanDTO> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(Set<ClientLoanDTO> loans) {
+        this.loans = loans;
+    }
+
+    public Set<CardDTO> getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<CardDTO> loans) {
+        this.cards = cards;
+    }
 
 }
