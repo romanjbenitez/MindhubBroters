@@ -18,8 +18,6 @@ public class Client {
     private String email;
 
     private String password;
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     private String  imgProfile;;
 
 

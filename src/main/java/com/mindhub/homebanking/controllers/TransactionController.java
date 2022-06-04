@@ -62,7 +62,7 @@ public class TransactionController {
         }
 
         sourceAccount.setBalance(sourceAccount.getBalance() - ammount);
-        destinationAccount.setBalance(sourceAccount.getBalance() + ammount);
+        destinationAccount.setBalance(destinationAccount.getBalance() + ammount);
         Transaction debitTransaction = new Transaction(TransactionType.debito, (-ammount), description + " " + destinationNumber, LocalDateTime.now());
         Transaction creditTransaction = new Transaction(TransactionType.credito, ammount, description + " " + originNumber, LocalDateTime.now());
         sourceAccount.addTransaction(debitTransaction);

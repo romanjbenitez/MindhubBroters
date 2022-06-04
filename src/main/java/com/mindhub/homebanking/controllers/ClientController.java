@@ -12,11 +12,13 @@ import org.springframework.security.core.Authentication;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.sql.rowset.serial.SerialBlob;
-import java.sql.Blob;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -52,14 +54,31 @@ public class ClientController {
     }
 
     @RequestMapping(path = "/clients/settings" , method = RequestMethod.POST)
-    public ResponseEntity<Object> changeSettings(@RequestParam String imgProfile, Authentication authentication) {
-        if(imgProfile.isEmpty()){
-            return new ResponseEntity<>("Change your profile",HttpStatus.FORBIDDEN);
+    public ResponseEntity<Object> changeSettings(@RequestParam("file") MultipartFile image, Authentication authentication) {
+        if(image.isEmpty()){
+            return new ResponseEntity<>("You must to submit an image",HttpStatus.FORBIDDEN);
         }
-        byte[] decodedByte = Base64.decodeBase64(imgProfile);
+        Path pathImgProfiles = Paths.get("src//main//resources//static/assets/usersProfiles");
+        String pathAbsolute = pathImgProfiles.toFile().getAbsolutePath();
         Client currentClient = repo.findByEmail(authentication.getName());
-        currentClient.setImgProfile(imgProfile);
-        repo.save(currentClient);
+        Path pathComplete = Paths.get(pathAbsolute + "//" +  image.getOriginalFilename());
+        if(currentClient.getImgProfile()!= null){
+            try {
+                Files.delete(Paths.get(pathAbsolute + "//" + currentClient.getImgProfile() ));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        try {
+            byte[] bytesImg = image.getBytes();
+            Files.write(pathComplete,bytesImg );
+            currentClient.setImgProfile(image.getOriginalFilename());
+            repo.save(currentClient);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         return new ResponseEntity<>("Change your profile",HttpStatus.CREATED);
     }

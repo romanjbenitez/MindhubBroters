@@ -31,10 +31,14 @@ Vue.createApp({
               text: "Login Successfully",
               icon: "success",
               confirmButtonText: "Close",
-            });
-            setTimeout(() => {
-              window.location.replace("./accounts.html");
-            }, 1000);
+            }).then(result => {
+              if (result.isConfirmed) {
+                setTimeout(() => {
+                  window.location.replace("./accounts.html");
+                }, 500);
+              }
+
+            });;
           })
           .catch((err) =>
             Swal.fire({
@@ -114,10 +118,16 @@ Vue.createApp({
                   text: "Resgister Successfully",
                   icon: "success",
                   confirmButtonText: "Close",
+                  
+                }).then(result => {
+                  if (result.isConfirmed) {
+                    setTimeout(() => {
+                      window.location.replace("./accounts.html");
+                    }, 500);
+                  }
+
                 });
-                setTimeout(() => {
-                  window.location.replace("./accounts.html");
-                }, 1000);
+                
               })
               .catch((err) => console.log(err));
           })
