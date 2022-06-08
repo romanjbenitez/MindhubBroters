@@ -20,7 +20,7 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/rest/**").hasAuthority("ADMIN")
+                .antMatchers("/rest/**").hasAuthority("CLIENT")
                 .antMatchers("/web/manager.html").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/**").hasAuthority("CLIENT")
                 .antMatchers("/web/accounts.html").hasAuthority("CLIENT")
@@ -28,10 +28,14 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
                 .antMatchers("/web/cards.html").hasAuthority("CLIENT")
                 .antMatchers("/web/transaction.html").hasAuthority("CLIENT")
                 .antMatchers("/web/create-cards.html").hasAuthority("CLIENT")
+                .antMatchers("/web/loan-application.html").hasAuthority("CLIENT")
+                .antMatchers("/web/settings.html").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST ,"/api/clients/current/**").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST ,"/api/transactions").hasAuthority("CLIENT")
-                .antMatchers( HttpMethod.POST,"/api/clients").permitAll()
-                .antMatchers( HttpMethod.POST,"/api/login").permitAll();
+                .antMatchers("/api/loans").hasAuthority("CLIENT")
+                .antMatchers( HttpMethod.POST,"/api/login").permitAll()
+                .antMatchers( HttpMethod.POST,"/api/clients").permitAll();
+
 
         http.formLogin().usernameParameter("email")
                 .passwordParameter("password")

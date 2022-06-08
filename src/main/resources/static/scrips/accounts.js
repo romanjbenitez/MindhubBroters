@@ -14,6 +14,10 @@ Vue.createApp({
       hide: "hide",
       urlAccount: "http://localhost:8080/web/account.html?id=",
       loans: [],
+      income: 0,
+      expense: 0,
+      installments: 0,
+      loanToPay: 0,
     };
   },
 
@@ -30,14 +34,31 @@ Vue.createApp({
           }, 0);
         this.transactions =
           this.accounts.length > 1
-            ? api.data.accounts[0].transactions.concat(
-                this.accounts[1].transactions
-              )
+            ? api.data.accounts[0].transactions
+                .concat(this.accounts[1].transactions)
+                .sort((a, b) => Number(a.date )- Number(b.date))
             : null;
+        console.log(this.transactions);
         this.firstName = api.data.firstName;
         this.lastName = api.data.lastName;
         this.email = api.data.email;
         this.loans = api.data.loans;
+        this.income = this.transactions
+          .filter((transaction) => transaction.type == "CREDIT")
+          .reduce((acc, item) => {
+            return acc + item.amount;
+          }, 0);
+        this.expense = this.transactions
+          .filter((transaction) => transaction.type == "DEBIT")
+          .reduce((acc, item) => {
+            return acc + item.amount;
+          }, 0);
+        this.loanToPay = this.loans.reduce((acc, item) => {
+          return acc + item.amount;
+        }, 0);
+        this.installments = this.loans.reduce((acc, item) => {
+          return Math.round(acc + item.amount / item.payments);
+        }, 0);
       })
       .catch((err) => console.log(err));
   },
@@ -54,42 +75,50 @@ Vue.createApp({
 
     addAccount() {
       Swal.fire({
-        title: 'Do you want add a new account?',
+        title: "Do you want add a new account?",
         showDenyButton: true,
-        confirmButtonText: 'Add new Account',
+        confirmButtonText: "Add new Account",
         denyButtonText: `Don't add`,
       }).then((result) => {
-        
         if (result.isConfirmed) {
           axios
-          .post("/api/clients/current/accounts", {
-            headers: { "content-type": "application/x-www-form-urlencoded" },
-          })
-          .then((response) => {
-            axios
-              .get("http://localhost:8080/api/clients/current")
-              .then(
-                (api) =>
-                  (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
-              );
-              Swal.fire("Account created successfully", '', 'success')
-          })
-          .catch((err) => Swal.fire("You don't could have more than three account", '', 'info')
-          );
+            .post("/api/clients/current/accounts", {
+              headers: { "content-type": "application/x-www-form-urlencoded" },
+            })
+            .then((response) => {
+              axios
+                .get("http://localhost:8080/api/clients/current")
+                .then(
+                  (api) =>
+                    (this.accounts = api.data.accounts.sort(
+                      (a, b) => a.id - b.id
+                    ))
+                );
+              Swal.fire("Account created successfully", "", "success");
+            })
+            .catch((err) =>
+              Swal.fire(
+                "You don't could have more than three account",
+                "",
+                "info"
+              )
+            );
         } else if (result.isDenied) {
-          Swal.fire('Action canceled', '', 'success')
+          Swal.fire("Action canceled", "", "success");
         }
-      })
-     
+      });
     },
     logout() {
       axios
         .post("/api/logout")
         .then((response) => window.location.replace("./index.html"));
     },
-    doTransactions(){
-      window.location.href = "/web/transfers.html"
-    }
+    doTransactions() {
+      window.location.href = "/web/transfers.html";
+    },
+    applyLoans() {
+      window.location.href = "/web/loan-application.html";
+    },
   },
 
   computed: {

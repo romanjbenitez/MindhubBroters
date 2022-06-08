@@ -115,22 +115,22 @@
                 <div class="boxes">
                   <i class="fa-solid fa-wallet"></i>
                   <p class="font-two">Income</p>
-                  <p class="fs-4">$7.<small class="fs-6">5K</small></p>
+                  <p class="fs-4">${{income}}</small></p>
                 </div>
                 <div class="boxes">
                   <i class="fa-solid fa-file-invoice-dollar"></i>
                   <p class="font-two">Expense</p>
-                  <p class="fs-4">$5.<small class="fs-6">3K</small></p>
+                  <p class="fs-4">${{expense.toString().substring(1)}}</small></p>
                 </div>
                 <div class="boxes">
                   <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                  <p class="font-two">Upcoming</p>
-                  <p class="fs-4">$3.<small class="fs-6">0k</small></p>
+                  <p class="font-two">Installments</p>
+                  <p class="fs-4">${{installments}}</small></p>
                 </div>
                 <div class="boxes">
                   <i class="fa-solid fa-hand-holding-dollar"></i>
-                  <p class="font-two">Savings</p>
-                  <p class="fs-4">$5<small class="fs-6">.3K</small></p>
+                  <p class="font-two">Loans</p>
+                  <p class="fs-4">${{loanToPay}}</small></p>
                 </div>
               </div>
               <div class="container-gray scale-up-center delayThree">
@@ -152,7 +152,7 @@
                       </p>
                       <div
                         class="m-0 state text-center"
-                        v-bind:class="transaction.type == 'credito' ? 'green' : 'red' "
+                        v-bind:class="transaction.type == 'CREDIT' ? 'green' : 'red' "
                       >
                         {{transaction.type.charAt(0).toUpperCase() +
                         transaction.type.slice(1)}}
@@ -260,8 +260,10 @@
                 >
                   Close
                 </button>
-                <button type="button" class="btn btn-success">Pay Loans</button>
+                <button type="button" class="btn btn-success me-2">Pay Loans</button>
+                <button type="button" class="btn btn-success" @click="applyLoans">Apply </button>
               </div>
+
               <div v-else>
                 <button
                   type="button"
@@ -270,7 +272,7 @@
                 >
                   Close
                 </button>
-                <button type="button" class="btn btn-success">Get Loans</button>
+                <button type="button" class="btn btn-success" @click="applyLoans">Apply</button>
               </div>
             </div>
           </div>

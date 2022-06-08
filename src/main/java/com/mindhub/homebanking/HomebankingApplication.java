@@ -15,8 +15,6 @@ import java.util.List;
 import static com.mindhub.homebanking.models.CardColor.*;
 import static com.mindhub.homebanking.models.CardType.CREDIT;
 import static com.mindhub.homebanking.models.CardType.DEBIT;
-import static com.mindhub.homebanking.models.TransactionType.credito;
-import static com.mindhub.homebanking.models.TransactionType.debito;
 
 
 @SpringBootApplication
@@ -25,7 +23,6 @@ public class HomebankingApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HomebankingApplication.class, args);
-
     }
 
     @Autowired
@@ -51,18 +48,18 @@ public class HomebankingApplication {
             Account account2 = new Account("VIN002", localDateNow.plusDays(1), 7500.00);
             Account account3 = new Account("VIN003", localDateNow, 500.00);
 
-            Transaction transaction1 = new Transaction(debito, -2000, "Cuota Mindhub", localDateNow);
-            Transaction transaction2 = new Transaction(credito, 4000, "Herencia", localDateNow);
-            Transaction transaction3 = new Transaction(credito, 7000, "Cobro alquiler", localDateNow);
-            Transaction transaction4 = new Transaction(credito, 7000, "Deposito Bancario", localDateNow);
-            Transaction transaction5 = new Transaction(debito, -7000, "Cuota Mindhub", localDateNow);
+            Transaction transaction1 = new Transaction(TransactionType.DEBIT, -2000, "Cuota Mindhub", localDateNow);
+            Transaction transaction2 = new Transaction(TransactionType.CREDIT, 4000, "Herencia", localDateNow);
+            Transaction transaction3 = new Transaction(TransactionType.CREDIT, 7000, "Cobro alquiler", localDateNow);
+            Transaction transaction4 = new Transaction(TransactionType.CREDIT, 7000, "Deposito Bancario", localDateNow);
+            Transaction transaction5 = new Transaction(TransactionType.DEBIT, -7000, "Cuota Mindhub", localDateNow);
             List<Integer> cuotasHipotecario = List.of(12, 24, 36, 48, 60);
             List<Integer> cuotasPersonal = List.of(6, 12, 24);
             List<Integer> cuotasAutomotriz = List.of(6, 12, 24, 36);
 
-            Loan mortgage = new Loan("Hipotecario", 500000, cuotasHipotecario);
+            Loan mortgage = new Loan("Mortgage", 500000, cuotasHipotecario);
             Loan personal = new Loan("Personal", 100000, cuotasPersonal);
-            Loan automotive = new Loan("Automotriz", 300000, cuotasAutomotriz);
+            Loan automotive = new Loan("Automotive", 300000, cuotasAutomotriz);
 
             ClientLoan clientLoanOne = new ClientLoan(400000, 60, mortgage, melba);
             ClientLoan clientLoanTwo = new ClientLoan(50000, 12, personal, melba);

@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +27,7 @@ public class TransactionController {
     private ClientRepository clientRepository;
 
     @Transactional
-    @RequestMapping(path = "/transactions", method = RequestMethod.POST)
+    @PostMapping("/transactions")
     public ResponseEntity<Object> newTransaction(@RequestParam Double ammount,
                                                  @RequestParam String description,
                                                  @RequestParam String originNumber,
@@ -43,7 +40,7 @@ public class TransactionController {
         if (sourceAccount.getBalance() < ammount) {
             return new ResponseEntity<>("insufficient money ", HttpStatus.FORBIDDEN);
         }
-        if (ammount.toString().isEmpty() || description.isEmpty() || originNumber.isEmpty() || destinationNumber.isEmpty()) {
+        if (ammount.toString().isEmpty()|| ammount < 0 || description.isEmpty() || originNumber.isEmpty() || destinationNumber.isEmpty()) {
             return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
         }
         if (sourceAccount.equals(destinationAccount)) {
@@ -63,14 +60,14 @@ public class TransactionController {
 
         sourceAccount.setBalance(sourceAccount.getBalance() - ammount);
         destinationAccount.setBalance(destinationAccount.getBalance() + ammount);
-        Transaction debitTransaction = new Transaction(TransactionType.debito, (-ammount), description + " " + destinationNumber, LocalDateTime.now());
-        Transaction creditTransaction = new Transaction(TransactionType.credito, ammount, description + " " + originNumber, LocalDateTime.now());
+        Transaction debitTransaction = new Transaction(TransactionType.DEBIT, (-ammount), description + " " + destinationNumber, LocalDateTime.now());
+        Transaction creditTransaction = new Transaction(TransactionType.CREDIT, ammount, description + " " + originNumber, LocalDateTime.now());
         sourceAccount.addTransaction(debitTransaction);
         destinationAccount.addTransaction((creditTransaction));
         accountRepository.save(sourceAccount);
         accountRepository.save(destinationAccount);
         transactionRepository.save(debitTransaction);
-        transactionRepository.save(creditTransaction);
+
 
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }

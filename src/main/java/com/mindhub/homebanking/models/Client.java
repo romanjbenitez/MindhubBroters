@@ -1,5 +1,7 @@
 package com.mindhub.homebanking.models;
+
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -18,25 +20,26 @@ public class Client {
     private String email;
 
     private String password;
-    private String  imgProfile;;
+    private String imgProfile;
+    ;
 
 
-
-    @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<ClientLoan> clientLoans;
-    @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
-    @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Card> cards = new HashSet<>();
 
 
-    public Client(){}
+    public Client() {
+    }
 
     public long getId() {
         return id;
     }
 
-    public Client( String firstName, String lastName, String email , String password) {
+    public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -47,6 +50,7 @@ public class Client {
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -62,6 +66,7 @@ public class Client {
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -69,17 +74,17 @@ public class Client {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
-
 
 
     public Set<Account> getAccounts() {
         return accounts;
     }
 
-    public void addAccount(Account account){
+    public void addAccount(Account account) {
         account.setClient(this);
         accounts.add(account);
     }
@@ -105,6 +110,7 @@ public class Client {
     public void setClientLoans(Set<ClientLoan> clientLoans) {
         this.clientLoans = clientLoans;
     }
+
     public List<Loan> getLoans() {
         return clientLoans.stream().map(ClientLoan::getLoan).collect(toList());
     }

@@ -127,7 +127,7 @@
                   </p>
                   <div
                     class="m-0 state text-center"
-                    :class="transaction.type == 'credito' ? 'green' : 'red' "
+                    :class="transaction.type == 'CREDIT' ? 'green' : 'red' "
                   >
                     {{transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}}
                   </div>

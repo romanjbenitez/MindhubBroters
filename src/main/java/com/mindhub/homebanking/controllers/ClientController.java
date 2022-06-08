@@ -32,12 +32,12 @@ public class ClientController {
     private PasswordEncoder passwordEncoder;
 
 
-    @RequestMapping("/clients")
+    @GetMapping("/clients")
     public List<ClientDTO> getClients() {
         return repo.findAll().stream().map(ClientDTO::new).collect(toList());
     }
 
-    @RequestMapping(path = "/clients", method = RequestMethod.POST)
+    @PostMapping("/clients")
     public ResponseEntity<Object> register(
             @RequestParam String firstName, @RequestParam String lastName,
             @RequestParam String email, @RequestParam String password) {
@@ -53,7 +53,7 @@ public class ClientController {
 
     }
 
-    @RequestMapping(path = "/clients/settings" , method = RequestMethod.POST)
+    @PostMapping("/clients/settings")
     public ResponseEntity<Object> changeSettings(@RequestParam("file") MultipartFile image, Authentication authentication) {
         if(image.isEmpty()){
             return new ResponseEntity<>("You must to submit an image",HttpStatus.FORBIDDEN);
@@ -83,12 +83,12 @@ public class ClientController {
         return new ResponseEntity<>("Change your profile",HttpStatus.CREATED);
     }
 
-    @RequestMapping("/clients/{id}")
+    @GetMapping("/clients/{id}")
     public ClientDTO getClient(@PathVariable Long id) {
         return repo.findById(id).map(ClientDTO::new).orElse(null);
     }
 
-    @RequestMapping("/clients/current")
+    @GetMapping("/clients/current")
     public ClientDTO getCurrentClient(Authentication authentication) {
         return new ClientDTO(repo.findByEmail(authentication.getName()));
     }

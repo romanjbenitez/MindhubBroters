@@ -28,17 +28,17 @@ public class AccountsController {
     @Autowired
     private ClientRepository repo;
 
-    @RequestMapping("/accounts")
+    @GetMapping("/accounts")
     public List<AccountDTO> getAccounts() {
         return repository.findAll().stream().map(AccountDTO::new).collect(toList());}
 
 
-    @RequestMapping("/accounts/{id}")
+    @GetMapping("/accounts/{id}")
     public AccountDTO getClient(@PathVariable Long id){
         return repository.findById(id).map(AccountDTO::new).orElse(null);
     }
 
-    @RequestMapping(path = "/clients/current/accounts", method = RequestMethod.POST)
+    @PostMapping("/clients/current/accounts")
     public ResponseEntity<Object> createNewAccount(Authentication authentication){
             if(repo.findByEmail(authentication.getName()).getAccounts().size() == 3){
                 return new ResponseEntity<Object>("you already have three accounts", HttpStatus.FORBIDDEN);
