@@ -91,7 +91,7 @@ public class ClientController {
 
     @PatchMapping("/clients/current/update")
     public ResponseEntity<Object> updateClient(@RequestParam String firstName, @RequestParam String lastName,
-                                        Authentication authentication) {
+                                               Authentication authentication) {
         if (firstName.isEmpty() || lastName.isEmpty()) {
             return new ResponseEntity<Object>("Missing data", HttpStatus.FORBIDDEN);
         }
@@ -101,6 +101,5 @@ public class ClientController {
         clientService.saveClient(clientAuth);
         return new ResponseEntity<Object>("Success", HttpStatus.CREATED);
     }
-
     ;
 }

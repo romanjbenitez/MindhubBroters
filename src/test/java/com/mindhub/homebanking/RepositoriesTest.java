@@ -1,11 +1,7 @@
 package com.mindhub.homebanking;
 
-import com.mindhub.homebanking.models.Account;
-import com.mindhub.homebanking.models.Card;
-import com.mindhub.homebanking.models.Loan;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.CardRepository;
-import com.mindhub.homebanking.repositories.LoanRepository;
+import com.mindhub.homebanking.models.*;
+import com.mindhub.homebanking.repositories.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -27,6 +23,12 @@ public class RepositoriesTest {
     AccountRepository accountRepository;
     @Autowired
     CardRepository cardRepository;
+    @Autowired
+    ClientLoanRepository clientLoanRepository;
+    @Autowired
+    ClientRepository clientRepository;
+    @Autowired
+    TransactionRepository transactionRepository;
 
     @Test
     public void existLoans() {
@@ -49,13 +51,30 @@ public class RepositoriesTest {
         assertThat(accounts, hasItem(hasProperty("number", is("VIN001"))));
     }
     @Test
-    public void existCards(){
-        List<Card> cards = cardRepository.findAll();
-        assertThat(cards, is(not(empty())));
+    public void existClientLoans(){
+        List<ClientLoan> clientLoans = clientLoanRepository.findAll();
+        assertThat(clientLoans, is(not(empty())));
     }
     @Test
-    public void existCardHolderMelba(){
-        List<Card> cards = cardRepository.findAll();
-        assertThat(cards, hasItem(hasProperty("cardHolder", is("Melba Morel"))));
+    public void existClients(){
+        List<Client> clients = clientRepository.findAll();
+        assertThat(clients, is(not(empty())));
+    }
+    @Test
+    public void existMelbaMorel(){
+        List<Client> clients = clientRepository.findAll();
+        assertThat(clients, hasItem(hasProperty("firstName", is("Melba"))));
+        assertThat(clients, hasItem(hasProperty("lastName", is("Morel"))));
+    }
+    @Test
+    public void existTransaction(){
+        List<Transaction> transactions = transactionRepository.findAll();
+        assertThat(transactions, is(not(empty())));
+    }
+    @Test
+    public void existTransactionsCuotaMindhub(){
+        List<Transaction> transactions = transactionRepository.findAll();
+        assertThat(transactions, hasItem(hasProperty("description", is("Cuota Mindhub"))));
     }
 }
+

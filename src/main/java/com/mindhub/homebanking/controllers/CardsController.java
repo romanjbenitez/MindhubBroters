@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 
 import static com.mindhub.homebanking.models.CardType.CREDIT;
 import static com.mindhub.homebanking.models.CardType.DEBIT;
+import static com.mindhub.homebanking.utils.CardUtils.getCardNumber;
+import static com.mindhub.homebanking.utils.CardUtils.getCvv;
 
 @RestController
 @RequestMapping("/api")
@@ -50,23 +52,17 @@ public class CardsController {
         }
 
         Set<String> numbersOfCards = cardsService.getNumbersOfCards();
-        String cardNumber = getRandomNumber(1000, 9999) + "-" +
-                getRandomNumber(1000, 9999) + "-" +
-                getRandomNumber(1000, 9999) + "-" +
-                getRandomNumber(1000, 9999);
-        while (numbersOfCards.contains(cardNumber)) {
-            cardNumber = getRandomNumber(1000, 9999) + "-" +
-                    getRandomNumber(1000, 9999) + "-" +
-                    getRandomNumber(1000, 9999) + "-" +
-                    getRandomNumber(1000, 9999);
-        }
+        String cardNumber = getCardNumber(numbersOfCards);
         String cardHolder = clientAuth.getFirstName() + clientAuth.getLastName();
-        Card newCard = new Card(type, color, cardHolder, cardNumber, getRandomNumber(100, 999), LocalDateTime.now(), LocalDateTime.now().plusYears(5));
+        Card newCard = new Card(type, color, cardHolder, cardNumber, getCvv(), LocalDateTime.now(), LocalDateTime.now().plusYears(5));
         clientAuth.addCard(newCard);
         cardsService.saveCard(newCard);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }
+
+
+
     @PostMapping("/clients/current/cards/delete")
     public ResponseEntity<Object> deleteCard(@RequestParam String cardNumber, Authentication authentication){
         if (cardNumber.isEmpty()){
@@ -83,7 +79,5 @@ public class CardsController {
        return new ResponseEntity<>("Deleted",HttpStatus.CREATED);
     }
 
-    public int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
+
 }
