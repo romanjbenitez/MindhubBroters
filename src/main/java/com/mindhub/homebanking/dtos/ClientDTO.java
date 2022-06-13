@@ -2,9 +2,7 @@ package com.mindhub.homebanking.dtos;
 
 import com.mindhub.homebanking.models.Client;
 
-import java.sql.Blob;
 import java.util.Set;
-
 
 import static java.util.stream.Collectors.toSet;
 
@@ -38,6 +36,7 @@ public class ClientDTO {
 
         this.cards = client.getCards().stream().map(CardDTO::new).collect(toSet());
         this.imgProfile = client.getImgProfile();
+
     }
 
     public long getId() {

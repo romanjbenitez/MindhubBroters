@@ -13,6 +13,9 @@ Vue.createApp({
       month: "",
       year: 0,
       transactions: [],
+      userProfille: null,
+      charging: true
+
     };
   },
 
@@ -38,6 +41,10 @@ Vue.createApp({
           .reduce((acc, item) => {
             return acc + item.balance;
           }, 0);
+          this.userProfille =
+          api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
+          setTimeout(() => {this.charging = false}, 500)
+          
       })
       .catch((err) => console / log(err));
   },

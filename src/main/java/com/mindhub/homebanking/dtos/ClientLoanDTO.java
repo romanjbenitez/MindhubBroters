@@ -1,10 +1,7 @@
 package com.mindhub.homebanking.dtos;
 
 
-
-import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.ClientLoan;
-import com.mindhub.homebanking.models.Loan;
 
 public class ClientLoanDTO {
     private long id;

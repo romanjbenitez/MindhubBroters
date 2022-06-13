@@ -1,11 +1,17 @@
 Vue.createApp({
   data() {
     return {
+      urlAccount: "http://localhost:8080/web/account.html?id=",
       accounts: [],
       hide: "hide",
       balance: 0,
       color: "GOLD",
       type: "DEBIT",
+      cards: [],
+      filteredCardsColor: [],
+      filteredCard: "",
+      filteredCardsNumber: [],
+      cardColor: "",
     };
   },
 
@@ -20,14 +26,47 @@ Vue.createApp({
           .reduce((acc, item) => {
             return acc + item.balance;
           }, 0);
+        this.cards = api.data.cards;
       })
-      .catch((err) => console / log(err));
+      .catch((err) => console.log(err));
   },
 
   methods: {
     hideBalance() {
       this.hide == "hide" ? (this.hide = "show") : (this.hide = "hide");
     },
+    deleteCard() {
+      Swal.fire({
+        title: "Are you sure you want to delete this card?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Yes, I'm sure",
+        denyButtonText: `I'm not sure`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(
+              "/api/clients/current/cards/delete",
+              `cardNumber=${this.filteredCard}`,
+              {
+                headers: {
+                  "content-type": "application/x-www-form-urlencoded",
+                },
+              }
+            )
+            .then((res) => {
+              Swal.fire("Card deleted successfully", "", "success");
+              setTimeout(() => {
+                window.location.replace("./cards.html");
+              }, 1000);
+            })
+            .catch((err) => Swal.fire(`${err}`, "", "info"));
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
+    },
+
     createCard() {
       Swal.fire({
         title: "Are you sure you want to get a new card?",
@@ -51,8 +90,11 @@ Vue.createApp({
               Swal.fire("Card created successfully", "", "success");
               setTimeout(() => {
                 window.location.replace("./cards.html");
-              });
-            }, 1000);
+              }, 1000);
+            })
+            .catch((err) =>
+              Swal.fire("Something got wrong, please try later", "", "info")
+            );
         } else if (result.isDenied) {
           Swal.fire("Changes are not saved", "", "info");
         }
@@ -83,7 +125,7 @@ Vue.createApp({
             })
             .catch((err) =>
               Swal.fire(
-                "You don't could have more than three account",
+                "You don't could have more than three cards",
                 "",
                 "info"
               )
@@ -93,9 +135,11 @@ Vue.createApp({
         }
       });
     },
-    logout(){
-      axios.post('/api/logout').then(response => window.location.replace("./index.html"))
-    }
+    logout() {
+      axios
+        .post("/api/logout")
+        .then((response) => window.location.replace("./index.html"));
+    },
   },
 
   computed: {
@@ -104,6 +148,19 @@ Vue.createApp({
       this.day = date.getDate();
       this.year = date.getFullYear();
       this.month = date.toDateString().split(" ")[1];
+    },
+    filterSelectCardsNumbers() {
+      let cards = [...this.cards];
+      if (cards.length > 0) {
+        this.filteredCardsColor = cards.filter(
+          (card) => card.type == this.type
+        );
+        this.cardColor = this.filteredCardsColor[0].color;
+        this.filteredCardsNumber = this.filteredCardsColor.filter(
+          (card) => card.color == this.cardColor
+        );
+        this.filteredCard = this.filteredCardsNumber[0].number;
+      }
     },
   },
 }).mount("#app");

@@ -1,5 +1,8 @@
 package com.mindhub.homebanking.models;
+
+
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -10,9 +13,13 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
+
     private long id;
+
     private String number;
+
     private LocalDateTime creationDate;
+
     private double balance;
 
     @ManyToOne

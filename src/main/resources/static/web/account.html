@@ -11,11 +11,28 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../animations.css">
     <title>MHB - Account</title>
   </head>
   <body>
     <div id="app">
-      <div class="d-flex container-sections">
+      <div v-if="charging===true">
+        <div class="preloader--container fade-out500">
+          <div class="preloader heartbeat">
+              <img src="../assets/img/Logo.png" class="w-100 h-100 p-3" alt="logo">
+          </div>
+          <div class="spinner">
+            <span>L</span>
+            <span>O</span>
+            <span>A</span>
+            <span>D</span>
+            <span>I</span>
+            <span>N</span>
+            <span>G</span>
+          </div>
+      </div>
+      </div>
+      <div v-else class="d-flex container-sections">
         <nav class="d-flex">
           <div class="container-img d-flex justify-content-center">
             <img src="../assets/img/Logo.png" alt="logo" srcset="" id="logo" />
@@ -99,7 +116,15 @@
             <div class="user-card">
               <i class="fa-regular fa-bell bell font-two"></i>
               <div class="client-card">
-                <i class="font-one fa-regular fa-circle-user"></i>
+                <i
+                  v-if="userProfille == null"
+                  class="font-one fa-regular fa-circle-user"
+                ></i>
+                <img
+                  v-else
+                  :src="userProfille"
+                  class="rounded-circle imgProflie"
+                />
                 <div class="d-flex flex-column">
                   <span class="font-one fw-bold">{{firstName}}</span>
                   <span class="font-two">Client </span>
@@ -117,9 +142,7 @@
                   <p class="font-one m-0 p-0 font-two">
                     {{transaction.description}}
                   </p>
-                  <span class="m-0 p-0 font-two">
-                    {{transaction.date}}
-                  </span>
+                  <span class="m-0 p-0 font-two"> {{transaction.date}} </span>
                 </div>
                 <div>
                   <p class="m-0 p-0 text-center font-one fs-4">
@@ -129,13 +152,13 @@
                     class="m-0 state text-center"
                     :class="transaction.type == 'CREDIT' ? 'green' : 'red' "
                   >
-                    {{transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}}
+                    {{transaction.type.charAt(0).toUpperCase() +
+                    transaction.type.slice(1)}}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         </main>
       </div>
       {{getToday}}

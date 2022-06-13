@@ -1,6 +1,7 @@
 Vue.createApp({
     data() {
       return {
+        urlAccount: "http://localhost:8080/web/account.html?id=",
         firstName: "",
         lastName: "",
         accounts: [],
@@ -12,6 +13,9 @@ Vue.createApp({
         transactions: [],
         creditsCard : [],
         debitsCard : [],
+        userProfille: null,
+        charging : true,
+        
       };
     },
   
@@ -21,14 +25,17 @@ Vue.createApp({
         .then((api) => {
           this.firstName = api.data.firstName;
           this.accounts = api.data.accounts.sort((a, b) => a.id - b.id)
-          this.creditsCard = api.data.cards.filter(card => card.type == 'CREDIT')
-          this.debitsCard = api.data.cards.filter(card => card.type == "DEBIT")
+          this.creditsCard = api.data.cards.filter(card => card.type == 'CREDIT').filter(card=> card.hidden == false)
+          this.debitsCard = api.data.cards.filter(card => card.type == "DEBIT").filter(card=> card.hidden == false)
           this.lastName = api.data.lastName;
           this.balance = this.accounts
           .filter((account) => account.balance != 0)
           .reduce((acc, item) => {
             return acc + item.balance;
           }, 0);
+          this.userProfille =
+          api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
+          setTimeout(() => {this.charging = false}, 500)
         })
         .catch((err) => console / log(err));
     },
@@ -39,6 +46,9 @@ Vue.createApp({
       },
       addcard(){
         window.location.replace("./create-cards.html")
+      },
+      deleteCard(){
+        window.location.replace("./delete-cards.html")
       },
       addAccount() {
         Swal.fire({

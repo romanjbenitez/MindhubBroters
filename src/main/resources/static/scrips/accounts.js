@@ -18,6 +18,9 @@ Vue.createApp({
       expense: 0,
       installments: 0,
       loanToPay: 0,
+      transactionsSort: [],
+      userProfille: null,
+      charging: true
     };
   },
 
@@ -32,22 +35,15 @@ Vue.createApp({
           .reduce((acc, item) => {
             return acc + item.balance;
           }, 0);
-        this.transactions =
-          this.accounts.length > 1
-            ? api.data.accounts[0].transactions
-                .concat(this.accounts[1].transactions)
-                .sort((a, b) => Number(a.date )- Number(b.date))
-            : null;
-        console.log(this.transactions);
+        this.transactions = this.accounts.length > 1 ? api.data.accounts[0].transactions.concat(this.accounts[1].transactions).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : null;
+        this.transactions = this.accounts[2] ? this.transactions.concat(this.accounts[2].transactions).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : this.transactions;
         this.firstName = api.data.firstName;
+        this.userProfille =
+          api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
         this.lastName = api.data.lastName;
         this.email = api.data.email;
         this.loans = api.data.loans;
-        this.income = this.transactions
-          .filter((transaction) => transaction.type == "CREDIT")
-          .reduce((acc, item) => {
-            return acc + item.amount;
-          }, 0);
+        this.income = this.transactions.filter((transaction) => transaction.type == "CREDIT").reduce((acc, item) => { return acc + item.amount; }, 0);
         this.expense = this.transactions
           .filter((transaction) => transaction.type == "DEBIT")
           .reduce((acc, item) => {
@@ -59,6 +55,8 @@ Vue.createApp({
         this.installments = this.loans.reduce((acc, item) => {
           return Math.round(acc + item.amount / item.payments);
         }, 0);
+        setTimeout(()=> {this.charging = false}, 1000)
+        
       })
       .catch((err) => console.log(err));
   },
@@ -90,9 +88,9 @@ Vue.createApp({
                 .get("http://localhost:8080/api/clients/current")
                 .then(
                   (api) =>
-                    (this.accounts = api.data.accounts.sort(
-                      (a, b) => a.id - b.id
-                    ))
+                  (this.accounts = api.data.accounts.sort(
+                    (a, b) => a.id - b.id
+                  ))
                 );
               Swal.fire("Account created successfully", "", "success");
             })

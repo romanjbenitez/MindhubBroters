@@ -20,9 +20,10 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/rest/**").hasAuthority("CLIENT")
+                .antMatchers("/rest/**").hasAuthority("ADMIN")
                 .antMatchers("/web/manager.html").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.GET,"/api/**").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.GET,"/api/clients/current").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.GET,"/api/clients").hasAuthority("ADMIN")
                 .antMatchers("/web/accounts.html").hasAuthority("CLIENT")
                 .antMatchers("/web/account.html").hasAuthority("CLIENT")
                 .antMatchers("/web/cards.html").hasAuthority("CLIENT")

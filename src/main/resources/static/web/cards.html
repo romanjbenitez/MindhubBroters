@@ -15,7 +15,23 @@
   </head>
   <body>
     <div id="app">
-      <div class="d-flex container-sections">
+      <div v-if="charging===true">
+        <div class="preloader--container fade-out500">
+          <div class="preloader heartbeat">
+              <img src="../assets/img/Logo.png" class="w-100 h-100 p-3" alt="logo">
+          </div>
+          <div class="spinner">
+            <span>L</span>
+            <span>O</span>
+            <span>A</span>
+            <span>D</span>
+            <span>I</span>
+            <span>N</span>
+            <span>G</span>
+          </div>
+      </div>
+      </div>
+      <div v-else class="d-flex container-sections">
         <nav class="d-flex">
           <div class="container-img d-flex justify-content-center">
             <img src="../assets/img/Logo.png" alt="logo" srcset="" id="logo" />
@@ -99,7 +115,15 @@
             <div class="user-card">
               <i class="fa-regular fa-bell bell font-two"></i>
               <div class="client-card">
-                <i class="font-one fa-regular fa-circle-user"></i>
+                <i
+                  v-if="userProfille == null"
+                  class="font-one fa-regular fa-circle-user"
+                ></i>
+                <img
+                  v-else
+                  :src="userProfille"
+                  class="rounded-circle imgProflie"
+                />
                 <div class="d-flex flex-column">
                   <span class="font-one fw-bold">{{firstName}}</span>
                   <span class="font-two">Client </span>
@@ -160,7 +184,8 @@
                   </div>
                 </div>
               </div>
-              <input type="button" class="actions font-four fs-3 w-75" value="ADD CARD" @click="addcard">
+              <div  class="actions font-four fs-3 w-75" @click="addcard"> <p>ADD CARD</p></div>
+              <div class="actions font-four fs-3 w-75" @click="deleteCard"> <p>DELETE CARD</p></div>
               </button>
             </div>
             
@@ -187,14 +212,18 @@
                     v-if="hide === 'show'"
                     class="d-flex justify-content-between align-items-center h-50"
                   >
-                    <h5 class="mb-0">{{card.number.split("-").join(" ")}}</h5>
+                    <h5 v-if="new Date() > new Date(card.thruDate)" class="mb-0">
+                      Expired card</h5>
+                    <h5 v-else class="mb-0">{{card.number.split("-").join(" ")}}</h5>
                     <i class="fa-brands fa-cc-visa h1 mb-0"></i>
                   </div>
                   <div
                     v-else
                     class="d-flex justify-content-between align-items-center h-50 mb-0"
-                  >
-                    <h5 class="mb-0">
+                  > 
+                  <h5 v-if="new Date() > new Date(card.thruDate)" class="mb-0">
+                    Expired card</h5>
+                    <h5 v-else class="mb-0">
                       ******
                       {{card.number.split("-")[card.number.split("-").length-1]}}
                     </h5>
@@ -216,7 +245,8 @@
                 <div>
                 </div>
               </div>
-              <input type="button" class="actions font-four fs-3 w-75" value="ADD CARD" @click="addcard">
+              <div class="actions font-four fs-3 w-75" @click="addcard"> <p>ADD CARD</p></div>
+              <div class="actions font-four fs-3 w-75" @click="deleteCard"> <p>DELETE CARD</p></div>
             </div>
           </div>
         </main>
