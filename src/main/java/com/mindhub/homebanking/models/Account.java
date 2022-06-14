@@ -21,22 +21,25 @@ public class Account {
     private LocalDateTime creationDate;
 
     private double balance;
+    private Boolean hidden = false;
+
 
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private Set<Transaction> transactions = new HashSet<>();
 
     public Set<Transaction> getTransactions() {
         return transactions;
     }
 
-    public void addTransaction(Transaction transaction){
+    public void addTransaction(Transaction transaction) {
         transaction.setAccount(this);
         transactions.add(transaction);
     }
+
     public Account() {
     }
 
@@ -53,6 +56,7 @@ public class Account {
     public String getNumber() {
         return number;
     }
+
     public void setNumber(String number) {
         this.number = number;
     }
@@ -60,6 +64,7 @@ public class Account {
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
+
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
@@ -67,10 +72,14 @@ public class Account {
     public double getBalance() {
         return balance;
     }
+
     public void setBalance(double balance) {
         this.balance = balance;
     }
 
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 
     public Client getClient() {
         return client;
@@ -78,6 +87,14 @@ public class Account {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
 
 }

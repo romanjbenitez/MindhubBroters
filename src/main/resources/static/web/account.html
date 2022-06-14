@@ -101,7 +101,13 @@
               </a>
             </div>
           </div>
-          <div class="d-flex h-100 align-items-end none">
+          <div class="d-flex h-100 align-items-end flex-column justify-content-end none">
+            <input
+            class="button mb-3"
+            type="button"
+            @click="deleteAccount"
+            value="Delete this account"
+          />
             <input
               class="button"
               type="button"

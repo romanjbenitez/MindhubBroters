@@ -35,20 +35,19 @@ Vue.createApp({
           .reduce((acc, item) => {
             return acc + item.balance;
           }, 0);
-        this.transactions = this.accounts.length > 1 ? api.data.accounts[0].transactions.concat(this.accounts[1].transactions).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : null;
+        this.transactions = this.accounts.length === 1 ? api.data.accounts[0].transactions : null
+        this.transactions = this.accounts.length > 1 && this.accounts.length != null ? api.data.accounts[0].transactions.concat(this.accounts[1].transactions).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : this.transactions;
         this.transactions = this.accounts[2] ? this.transactions.concat(this.accounts[2].transactions).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : this.transactions;
+      
+
         this.firstName = api.data.firstName;
-        this.userProfille =
-          api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
+        this.userProfille = api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
         this.lastName = api.data.lastName;
         this.email = api.data.email;
         this.loans = api.data.loans;
-        this.income = this.transactions.filter((transaction) => transaction.type == "CREDIT").reduce((acc, item) => { return acc + item.amount; }, 0);
-        this.expense = this.transactions
-          .filter((transaction) => transaction.type == "DEBIT")
-          .reduce((acc, item) => {
-            return acc + item.amount;
-          }, 0);
+
+        this.income = this.transactions == null ? 0 : this.transactions.filter((transaction) => transaction.type == "CREDIT").reduce((acc, item) => { return acc + item.amount; }, 0);
+        this.expense = this.transactions == null ? 0 : this.transactions.filter((transaction) => transaction.type == "DEBIT").reduce((acc, item) => { return acc + item.amount;}, 0);
         this.loanToPay = this.loans.reduce((acc, item) => {
           return acc + item.amount;
         }, 0);

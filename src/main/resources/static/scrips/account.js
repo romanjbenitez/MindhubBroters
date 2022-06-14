@@ -14,7 +14,8 @@ Vue.createApp({
       year: 0,
       transactions: [],
       userProfille: null,
-      charging: true
+      charging: true,
+      accountBalance : 0
 
     };
   },
@@ -29,6 +30,7 @@ Vue.createApp({
         this.numbreOfAccount = this.account.number;
         this.accountID = this.account.id;
         this.transactions = this.account.transactions;
+        this.accountBalance = this.account.balance;
       })
       .catch((err) => console.log(err));
     axios
@@ -41,10 +43,10 @@ Vue.createApp({
           .reduce((acc, item) => {
             return acc + item.balance;
           }, 0);
-          this.userProfille =
+        this.userProfille =
           api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
-          setTimeout(() => {this.charging = false}, 500)
-          
+        setTimeout(() => { this.charging = false }, 500)
+
       })
       .catch((err) => console / log(err));
   },
@@ -81,29 +83,52 @@ Vue.createApp({
         confirmButtonText: 'Add new Account',
         denyButtonText: `Don't add`,
       }).then((result) => {
-        
+
         if (result.isConfirmed) {
           axios
-          .post("/api/clients/current/accounts", {
-            headers: { "content-type": "application/x-www-form-urlencoded" },
-          })
-          .then((response) => {
-            axios
-              .get("http://localhost:8080/api/clients/current")
-              .then(
-                (api) =>
-                  (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
-              );
+            .post("/api/clients/current/accounts", {
+              headers: { "content-type": "application/x-www-form-urlencoded" },
+            })
+            .then((response) => {
+              axios
+                .get("http://localhost:8080/api/clients/current")
+                .then(
+                  (api) =>
+                    (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
+                );
               Swal.fire("Account created successfully", '', 'success')
-          })
-          .catch((err) => Swal.fire("You don't could have more than three account", '', 'info')
-          );
+            })
+            .catch((err) => Swal.fire("You don't could have more than three account", '', 'info')
+            );
         } else if (result.isDenied) {
           Swal.fire('Action canceled')
         }
       })
-     
     },
+    deleteAccount() {
+      if(this.accountBalance !== 0){
+        return Swal.fire("first you must empty the balance of your account", '', 'info')
+      }
+
+      Swal.fire({
+        title: `Are you sure you want to delete the account number ${this.numbreOfAccount}?`,
+        showDenyButton: true,
+        confirmButtonText: 'Yes, delete',
+        denyButtonText: `Don't delete`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post("/api/clients/current/accounts/delete", `number=${this.numbreOfAccount}`, { headers: { "content-type": "application/x-www-form-urlencoded" } },).then(res => {
+            Swal.fire("Account deleted successfully", '', 'success')
+            setTimeout(() => {
+              window.location.replace("./accounts.html")
+            }, 1000)
+          })
+        }
+      })
+
+    }
+
+
   },
 
   computed: {

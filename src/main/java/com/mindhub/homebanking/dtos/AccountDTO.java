@@ -13,6 +13,7 @@ public class AccountDTO {
     private LocalDateTime creationDate;
     private double balance;
     private Set<TransactionDTO> transactions;
+    private boolean hidden;
     public AccountDTO() {
     }
 
@@ -25,7 +26,8 @@ public class AccountDTO {
 
         this.balance = account.getBalance();
 
-        this.transactions = account.getTransactions().stream().map(TransactionDTO::new).collect(toSet());
+        this.transactions = account.getTransactions().stream().map(TransactionDTO::new).filter(transactionDTO -> !transactionDTO.isHidden()).collect(toSet());
+        this.hidden = account.getHidden();
     }
 
     public long getId() {
@@ -62,6 +64,10 @@ public class AccountDTO {
 
     public void setAccounts(Set<TransactionDTO> transactions) {
         this.transactions = transactions;
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 }
 

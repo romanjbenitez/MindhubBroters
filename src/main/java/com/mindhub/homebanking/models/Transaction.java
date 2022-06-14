@@ -14,6 +14,8 @@ public class Transaction {
     private double amount;
     private String description;
     private LocalDateTime date;
+    private Boolean hidden = false;
+
 
     public Transaction() {
     }
@@ -49,7 +51,13 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+    public Boolean getHidden() {
+        return hidden;
+    }
 
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
+    }
     public String getDescription() {
         return description;
     }

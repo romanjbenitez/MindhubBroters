@@ -30,11 +30,11 @@ public class ClientDTO {
 
         this.email = client.getEmail();
 
-        this.accounts = client.getAccounts().stream().map(AccountDTO::new).collect(toSet());
+        this.accounts = client.getAccounts().stream().map(AccountDTO::new).filter(accountDTO -> !accountDTO.isHidden()).collect(toSet());
 
         this.loans = client.getClientLoans().stream().map(ClientLoanDTO::new).collect(toSet());
 
-        this.cards = client.getCards().stream().map(CardDTO::new).collect(toSet());
+        this.cards = client.getCards().stream().map(CardDTO::new).filter(cardDTO -> !cardDTO.getHidden()).collect(toSet());
         this.imgProfile = client.getImgProfile();
 
     }
