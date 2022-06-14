@@ -18,7 +18,7 @@ public class Loan {
     private long id;
     private String name;
     private int maxAmount;
-
+    private double interestPercentage;
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
     private Set<ClientLoan> clientLoans;
     @ElementCollection
@@ -28,10 +28,11 @@ public class Loan {
     public Loan() {
     }
 
-    public Loan(String name, int maxAmount, List<Integer> payments) {
+    public Loan(String name, int maxAmount, List<Integer> payments, double interestPercentage) {
         this.name = name;
         this.maxAmount = maxAmount;
         this.payments = payments;
+        this.interestPercentage = interestPercentage;
     }
 
     public long getId() {
@@ -63,6 +64,15 @@ public class Loan {
         clientLoan.setLoan(this);
         clientLoans.add(clientLoan);
     }
+
+    public double getInterestPercentage() {
+        return interestPercentage;
+    }
+
+    public void setInterestPercentage(double interestPercentage) {
+        this.interestPercentage = interestPercentage;
+    }
+
     @JsonIgnore
     public List<Client> getClients() {
         return clientLoans.stream().map(ClientLoan::getClient).collect(toList());

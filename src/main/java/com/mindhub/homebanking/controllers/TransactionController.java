@@ -78,11 +78,12 @@ public class TransactionController {
         if (accountsService.getAccountByNumber(destinationNumber) == null) {
             return new ResponseEntity<>("Destination account doesn't exist", HttpStatus.FORBIDDEN);
         }
-
-        sourceAccount.setBalance(sourceAccount.getBalance() - ammount);
-        destinationAccount.setBalance(destinationAccount.getBalance() + ammount);
         Transaction debitTransaction = new Transaction(TransactionType.DEBIT, (-ammount), description + " " + destinationNumber, LocalDateTime.now());
         Transaction creditTransaction = new Transaction(TransactionType.CREDIT, ammount, description + " " + originNumber, LocalDateTime.now());
+        debitTransaction.setAccountBalance(sourceAccount.getBalance() - ammount);
+        creditTransaction.setAccountBalance(destinationAccount.getBalance() + ammount);
+        sourceAccount.setBalance(sourceAccount.getBalance() - ammount);
+        destinationAccount.setBalance(destinationAccount.getBalance() + ammount);
         sourceAccount.addTransaction(debitTransaction);
         destinationAccount.addTransaction((creditTransaction));
         accountsService.saveAccount(sourceAccount);

@@ -55,9 +55,9 @@ public class HomebankingApplication {
             List<Integer> cuotasPersonal = List.of(6, 12, 24);
             List<Integer> cuotasAutomotriz = List.of(6, 12, 24, 36);
 
-            Loan mortgage = new Loan("Mortgage", 500000, cuotasHipotecario);
-            Loan personal = new Loan("Personal", 100000, cuotasPersonal);
-            Loan automotive = new Loan("Automotive", 300000, cuotasAutomotriz);
+            Loan mortgage = new Loan("Mortgage", 500000, cuotasHipotecario, 1.20);
+            Loan personal = new Loan("Personal", 100000, cuotasPersonal, 1.40);
+            Loan automotive = new Loan("Automotive", 300000, cuotasAutomotriz, 1.25);
 
             ClientLoan clientLoanOne = new ClientLoan(400000, 60, mortgage, melba);
             ClientLoan clientLoanTwo = new ClientLoan(50000, 12, personal, melba);

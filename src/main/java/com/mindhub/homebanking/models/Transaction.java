@@ -15,8 +15,7 @@ public class Transaction {
     private String description;
     private LocalDateTime date;
     private Boolean hidden = false;
-
-
+    private double accountBalance = 0;
     public Transaction() {
     }
 
@@ -76,5 +75,13 @@ public class Transaction {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 }

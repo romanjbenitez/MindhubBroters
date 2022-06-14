@@ -78,12 +78,12 @@ public class LoanController {
         if (clientAuthLoans.contains(loan.getName())) {
             return new ResponseEntity<>("Rejected you doesn't could have two loans of the same type ", HttpStatus.FORBIDDEN);
         }
-        Double priceLoan = LoanApplicationDTO.getAmmount() * 1.2;
+        Double priceLoan = LoanApplicationDTO.getAmmount() * loan.getInterestPercentage();
         ClientLoan newClientLoan = new ClientLoan(priceLoan.intValue(), LoanApplicationDTO.getPayments(), loan, clientAuth);
         Transaction newTransaction = new Transaction(TransactionType.CREDIT, LoanApplicationDTO.getAmmount(), loan.getName() + " loan approved", LocalDateTime.now());
+        newTransaction.setAccountBalance(destinyAccount.getBalance() + LoanApplicationDTO.getAmmount());
         destinyAccount.setBalance(destinyAccount.getBalance() + LoanApplicationDTO.getAmmount());
         clientLoanRepository.save(newClientLoan);
-
         transactionService.saveTransaction(newTransaction);
         destinyAccount.addTransaction(newTransaction);
         accountsService.saveAccount(destinyAccount);

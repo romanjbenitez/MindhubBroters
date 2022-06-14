@@ -13,6 +13,8 @@ public class TransactionDTO {
     private String description;
     private LocalDateTime date;
     private boolean hidden;
+    private double accountBalance;
+
     public TransactionDTO() {
     }
 
@@ -26,6 +28,7 @@ public class TransactionDTO {
         this.description = transaction.getDescription();
         this.date = transaction.getDate();
         this.hidden = transaction.getHidden();
+        this.accountBalance = transaction.getAccountBalance();
     }
 
 
@@ -63,6 +66,10 @@ public class TransactionDTO {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
     }
 
     public boolean isHidden() {
