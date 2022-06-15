@@ -41,23 +41,25 @@ public class HomebankingApplication {
             Client melba = new Client("Melba", "Morel", "melba@mindhub.com",passwordEncoder.encode("melba"));
             Client client2 = new Client("Roman", "Benitez", "roman@mindhub.com",passwordEncoder.encode("1234"));
 
+            melba.setClientRole("ADMIN");
+
             LocalDateTime localDateNow = LocalDateTime.now();
-            Account account1 = new Account("VIN001", localDateNow, 5000.00);
-            Account account2 = new Account("VIN002", localDateNow.plusDays(1), 7500.00);
-            Account account3 = new Account("VIN003", localDateNow, 500.00);
+            Account account1 = new Account("VIN001", localDateNow, 5000.00, AccountType.Saving);
+            Account account2 = new Account("VIN002", localDateNow.plusDays(1), 7500.00, AccountType.Saving);
+            Account account3 = new Account("VIN003", localDateNow, 500.00,AccountType.Saving);
 
-            Transaction transaction1 = new Transaction(TransactionType.DEBIT, -2000, "Cuota Mindhub", localDateNow);
-            Transaction transaction2 = new Transaction(TransactionType.CREDIT, 4000, "Herencia", localDateNow);
-            Transaction transaction3 = new Transaction(TransactionType.CREDIT, 7000, "Cobro alquiler", localDateNow);
-            Transaction transaction4 = new Transaction(TransactionType.CREDIT, 7000, "Deposito Bancario", localDateNow);
-            Transaction transaction5 = new Transaction(TransactionType.DEBIT, -7000, "Cuota Mindhub", localDateNow);
-            List<Integer> cuotasHipotecario = List.of(12, 24, 36, 48, 60);
-            List<Integer> cuotasPersonal = List.of(6, 12, 24);
-            List<Integer> cuotasAutomotriz = List.of(6, 12, 24, 36);
+            Transaction transaction1 = new Transaction(TransactionType.DEBIT, -2000, "Payment Mindhub", localDateNow);
+            Transaction transaction2 = new Transaction(TransactionType.CREDIT, 4000, "Heredity", localDateNow);
+            Transaction transaction3 = new Transaction(TransactionType.CREDIT, 7000, "Rent", localDateNow);
+            Transaction transaction4 = new Transaction(TransactionType.CREDIT, 7000, "Bank deposit", localDateNow);
+            Transaction transaction5 = new Transaction(TransactionType.DEBIT, -7000, "Payment Mindhub", localDateNow);
+            List<Integer> paymentsMortage = List.of(12, 24, 36, 48, 60);
+            List<Integer> paymentsPersonal = List.of(6, 12, 24);
+            List<Integer> paymentsAutomotive= List.of(6, 12, 24, 36);
 
-            Loan mortgage = new Loan("Mortgage", 500000, cuotasHipotecario, 1.20);
-            Loan personal = new Loan("Personal", 100000, cuotasPersonal, 1.40);
-            Loan automotive = new Loan("Automotive", 300000, cuotasAutomotriz, 1.25);
+            Loan mortgage = new Loan("Mortgage", 500000, paymentsMortage, 1.20);
+            Loan personal = new Loan("Personal", 100000, paymentsPersonal, 1.40);
+            Loan automotive = new Loan("Automotive", 300000, paymentsAutomotive, 1.25);
 
             ClientLoan clientLoanOne = new ClientLoan(400000, 60, mortgage, melba);
             ClientLoan clientLoanTwo = new ClientLoan(50000, 12, personal, melba);

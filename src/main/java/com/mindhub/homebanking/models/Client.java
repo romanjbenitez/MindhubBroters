@@ -21,6 +21,7 @@ public class Client {
 
     private String password;
     private String imgProfile;
+    private String clientRole = "CLIENT"
     ;
 
 
@@ -121,5 +122,13 @@ public class Client {
 
     public void setImgProfile(String imgProfile) {
         this.imgProfile = imgProfile;
+    }
+
+    public String getClientRole() {
+        return clientRole;
+    }
+
+    public void setClientRole(String clientRole) {
+        this.clientRole = clientRole;
     }
 }

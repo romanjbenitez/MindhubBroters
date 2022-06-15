@@ -108,7 +108,7 @@ Vue.createApp({
                 }
               )
               .then((response) => {
-                axios.post("/api/clients/current/accounts", {
+                axios.post("/api/clients/current/accounts","accountType=Saving", {
                   headers: {
                     "content-type": "application/x-www-form-urlencoded",
                   },

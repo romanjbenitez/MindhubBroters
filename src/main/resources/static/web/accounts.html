@@ -92,7 +92,10 @@
                 />
                 <div v-if="hide === 'show'" class="safe-info">
                   <p class="font-four mb-1 fw-bold h6">$ {{account.balance}}</p>
-                  <small class="font-five m-0 fs-6">{{account.number}}</small>
+                  <div class="d-flex flex-column">
+                    <small class="font-five m-0 fs-6">{{account.number}}</small>
+                    <small class="font-five m-0 fs-6">{{account.accountType}}</small>
+                  </div>
                 </div>
                 <div v-else class="safe-info">
                   <p class="font-four mb-1 fw-bold h5">$ *******</p>

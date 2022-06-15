@@ -22,6 +22,7 @@ public class Account {
 
     private double balance;
     private Boolean hidden = false;
+    private AccountType accountType;
 
 
     @ManyToOne
@@ -43,10 +44,11 @@ public class Account {
     public Account() {
     }
 
-    public Account(String number, LocalDateTime creationDate, double balance) {
+    public Account(String number, LocalDateTime creationDate, double balance, AccountType accountType) {
         this.number = number;
         this.creationDate = creationDate;
         this.balance = balance;
+        this.accountType = accountType;
     }
 
     public long getId() {
@@ -91,6 +93,14 @@ public class Account {
 
     public Boolean getHidden() {
         return hidden;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     public void setHidden(Boolean hidden) {

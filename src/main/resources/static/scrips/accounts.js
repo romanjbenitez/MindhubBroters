@@ -38,7 +38,7 @@ Vue.createApp({
         this.transactions = this.accounts.length === 1 ? api.data.accounts[0].transactions : null
         this.transactions = this.accounts.length > 1 && this.accounts.length != null ? api.data.accounts[0].transactions.concat(this.accounts[1].transactions).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : this.transactions;
         this.transactions = this.accounts[2] ? this.transactions.concat(this.accounts[2].transactions).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : this.transactions;
-      
+
 
         this.firstName = api.data.firstName;
         this.userProfille = api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
@@ -47,15 +47,15 @@ Vue.createApp({
         this.loans = api.data.loans;
 
         this.income = this.transactions == null ? 0 : this.transactions.filter((transaction) => transaction.type == "CREDIT").reduce((acc, item) => { return acc + item.amount; }, 0);
-        this.expense = this.transactions == null ? 0 : this.transactions.filter((transaction) => transaction.type == "DEBIT").reduce((acc, item) => { return acc + item.amount;}, 0);
+        this.expense = this.transactions == null ? 0 : this.transactions.filter((transaction) => transaction.type == "DEBIT").reduce((acc, item) => { return acc + item.amount; }, 0);
         this.loanToPay = this.loans.reduce((acc, item) => {
           return acc + item.amount;
         }, 0);
         this.installments = this.loans.reduce((acc, item) => {
           return Math.round(acc + item.amount / item.payments);
         }, 0);
-        setTimeout(()=> {this.charging = false}, 1000)
-        
+        setTimeout(() => { this.charging = false }, 1000)
+
       })
       .catch((err) => console.log(err));
   },
@@ -70,40 +70,46 @@ Vue.createApp({
       return newDate + " at " + time;
     },
 
-    addAccount() {
-      Swal.fire({
-        title: "Do you want add a new account?",
-        showDenyButton: true,
-        confirmButtonText: "Add new Account",
-        denyButtonText: `Don't add`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .post("/api/clients/current/accounts", {
-              headers: { "content-type": "application/x-www-form-urlencoded" },
-            })
-            .then((response) => {
-              axios
-                .get("http://localhost:8080/api/clients/current")
-                .then(
-                  (api) =>
-                  (this.accounts = api.data.accounts.sort(
-                    (a, b) => a.id - b.id
-                  ))
-                );
-              Swal.fire("Account created successfully", "", "success");
-            })
-            .catch((err) =>
-              Swal.fire(
-                "You don't could have more than three account",
-                "",
-                "info"
-              )
-            );
-        } else if (result.isDenied) {
-          Swal.fire("Action canceled", "", "success");
-        }
+    async addAccount() {
+
+      const { value: accountType } = await Swal.fire({
+        title: 'Select an account type',
+        input: 'select',
+        inputOptions: {
+          'Saving': 'Saving',
+          'Checking': 'Checking'
+        },
+        inputPlaceholder: 'Select an account type',
+        showCancelButton: true,
       });
+      if (accountType) {
+        Swal.fire({
+          title: 'Do you want add a new account?',
+          showDenyButton: true,
+          confirmButtonText: 'Add new Account',
+          denyButtonText: `Don't add`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios
+              .post("/api/clients/current/accounts", `accountType=${accountType}`, {
+                headers: { "content-type": "application/x-www-form-urlencoded" },
+              })
+              .then((response) => {
+                axios
+                  .get("http://localhost:8080/api/clients/current")
+                  .then(
+                    (api) =>
+                      (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
+                  );
+                Swal.fire("Account created successfully", '', 'success')
+              })
+              .catch((err) => Swal.fire("You don't could have more than three account", '', 'info')
+              );
+          } else if (result.isDenied) {
+            Swal.fire('Action canceled')
+          }
+        })
+      }
     },
     logout() {
       axios

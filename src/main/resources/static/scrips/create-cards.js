@@ -100,40 +100,46 @@ Vue.createApp({
         }
       });
     },
-    addAccount() {
-      Swal.fire({
-        title: "Do you want add a new account?",
-        showDenyButton: true,
-        confirmButtonText: "Add new Account",
-        denyButtonText: `Don't add`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .post("/api/clients/current/accounts", {
-              headers: { "content-type": "application/x-www-form-urlencoded" },
-            })
-            .then((response) => {
-              axios
-                .get("http://localhost:8080/api/clients/current")
-                .then(
-                  (api) =>
-                    (this.accounts = api.data.accounts.sort(
-                      (a, b) => a.id - b.id
-                    ))
-                );
-              Swal.fire("Account created successfully", "", "success");
-            })
-            .catch((err) =>
-              Swal.fire(
-                "You don't could have more than three cards",
-                "",
-                "info"
-              )
-            );
-        } else if (result.isDenied) {
-          Swal.fire("Action canceled");
-        }
+    async addAccount() {
+
+      const { value: accountType } = await Swal.fire({
+        title: 'Select an account type',
+        input: 'select',
+        inputOptions: {
+          'Saving': 'Saving',
+          'Checking': 'Checking'
+        },
+        inputPlaceholder: 'Select an account type',
+        showCancelButton: true,
       });
+      if (accountType) {
+        Swal.fire({
+          title: 'Do you want add a new account?',
+          showDenyButton: true,
+          confirmButtonText: 'Add new Account',
+          denyButtonText: `Don't add`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios
+              .post("/api/clients/current/accounts", `accountType=${accountType}`, {
+                headers: { "content-type": "application/x-www-form-urlencoded" },
+              })
+              .then((response) => {
+                axios
+                  .get("http://localhost:8080/api/clients/current")
+                  .then(
+                    (api) =>
+                      (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
+                  );
+                Swal.fire("Account created successfully", '', 'success')
+              })
+              .catch((err) => Swal.fire("You don't could have more than three account", '', 'info')
+              );
+          } else if (result.isDenied) {
+            Swal.fire('Action canceled')
+          }
+        })
+      }
     },
     logout() {
       axios

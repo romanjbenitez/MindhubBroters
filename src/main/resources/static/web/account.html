@@ -11,7 +11,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="../animations.css">
+    <link rel="stylesheet" href="../animations.css" />
     <title>MHB - Account</title>
   </head>
   <body>
@@ -19,7 +19,11 @@
       <div v-if="charging===true">
         <div class="preloader--container fade-out500">
           <div class="preloader heartbeat">
-              <img src="../assets/img/Logo.png" class="w-100 h-100 p-3" alt="logo">
+            <img
+              src="../assets/img/Logo.png"
+              class="w-100 h-100 p-3"
+              alt="logo"
+            />
           </div>
           <div class="spinner">
             <span>L</span>
@@ -30,7 +34,7 @@
             <span>N</span>
             <span>G</span>
           </div>
-      </div>
+        </div>
       </div>
       <div v-else class="d-flex container-sections">
         <nav class="d-flex">
@@ -92,7 +96,12 @@
                 />
                 <div v-if="hide === 'show'" class="safe-info">
                   <p class="font-four mb-1 fw-bold h6">$ {{account.balance}}</p>
-                  <small class="font-five m-0 fs-6">{{account.number}}</small>
+                  <div class="d-flex flex-column">
+                    <small class="font-five m-0 fs-6">{{account.number}}</small>
+                    <small class="font-five m-0 fs-6"
+                      >{{account.accountType}}</small
+                    >
+                  </div>
                 </div>
                 <div v-else class="safe-info">
                   <p class="font-four mb-1 fw-bold h5">$ *******</p>
@@ -101,13 +110,15 @@
               </a>
             </div>
           </div>
-          <div class="d-flex h-100 align-items-end flex-column justify-content-end none">
+          <div
+            class="d-flex h-100 align-items-end flex-column justify-content-end none"
+          >
             <input
-            class="button mb-3"
-            type="button"
-            @click="deleteAccount"
-            value="Delete this account"
-          />
+              class="button mb-3"
+              type="button"
+              @click="deleteAccount"
+              value="Delete this account"
+            />
             <input
               class="button"
               type="button"

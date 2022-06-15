@@ -2,6 +2,7 @@ package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Transaction;
 import com.mindhub.homebanking.services.AccountsService;
@@ -43,7 +44,7 @@ public class AccountsController {
 
 
     @PostMapping("/clients/current/accounts")
-    public ResponseEntity<Object> createNewAccount(Authentication authentication) {
+    public ResponseEntity<Object> createNewAccount(Authentication authentication, @RequestParam AccountType accountType) {
         if (clientService.getCurrentClient(authentication).getAccounts().stream().filter(account -> !account.getHidden()).collect(Collectors.toSet()).size() == 3) {
             return new ResponseEntity<Object>("you already have three accounts", HttpStatus.FORBIDDEN);
         }
@@ -53,7 +54,7 @@ public class AccountsController {
         while (numbersAccount.contains(randomNumber)) {
             randomNumber = "VIN" + getRandomNumber(10000000, 99999999);
         }
-        Account newAccount = new Account(randomNumber, LocalDateTime.now(), 0);
+        Account newAccount = new Account(randomNumber, LocalDateTime.now(), 0,accountType);
 
         clientService.getCurrentClient(authentication).addAccount(newAccount);
         accountsService.saveAccount(newAccount);
