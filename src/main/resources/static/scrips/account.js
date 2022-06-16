@@ -15,8 +15,8 @@ Vue.createApp({
       transactions: [],
       userProfille: null,
       charging: true,
-      accountBalance : 0
-
+      accountBalance : 0,
+      clientRole: ""
     };
   },
 
@@ -37,6 +37,7 @@ Vue.createApp({
       .get("http://localhost:8080/api/clients/current")
       .then((api) => {
         this.firstName = api.data.firstName;
+        this.clientRole = api.data.clientRole
         this.accounts = api.data.accounts.sort((a, b) => a.id - b.id);
         this.balance = this.accounts
           .filter((account) => account.balance != 0)
@@ -46,7 +47,7 @@ Vue.createApp({
         this.userProfille =
           api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
         setTimeout(() => { this.charging = false }, 500)
-
+        
       })
       .catch((err) => console / log(err));
   },

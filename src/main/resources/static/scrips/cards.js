@@ -15,6 +15,7 @@ Vue.createApp({
         debitsCard : [],
         userProfille: null,
         charging : true,
+        clientRole: ""
         
       };
     },
@@ -24,6 +25,7 @@ Vue.createApp({
         .get("http://localhost:8080/api/clients/current")
         .then((api) => {
           this.firstName = api.data.firstName;
+          this.clientRole = api.data.clientRole
           this.accounts = api.data.accounts.sort((a, b) => a.id - b.id)
           this.creditsCard = api.data.cards.filter(card => card.type == 'CREDIT').filter(card=> card.hidden == false)
           this.debitsCard = api.data.cards.filter(card => card.type == "DEBIT").filter(card=> card.hidden == false)

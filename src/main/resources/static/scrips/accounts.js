@@ -20,7 +20,8 @@ Vue.createApp({
       loanToPay: 0,
       transactionsSort: [],
       userProfille: null,
-      charging: true
+      charging: true,
+      clientRole: ""
     };
   },
 
@@ -41,6 +42,7 @@ Vue.createApp({
 
 
         this.firstName = api.data.firstName;
+        this.clientRole = api.data.clientRole
         this.userProfille = api.data.imgProfile == null ? null : "../assets/usersProfiles/" + api.data.imgProfile;
         this.lastName = api.data.lastName;
         this.email = api.data.email;

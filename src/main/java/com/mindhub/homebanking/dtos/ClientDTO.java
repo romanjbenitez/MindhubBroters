@@ -16,7 +16,7 @@ public class ClientDTO {
     private Set<ClientLoanDTO> loans;
     private Set<CardDTO> cards;
     private String imgProfile;
-
+    private String clientRole;
     public ClientDTO() {
     }
 
@@ -36,7 +36,7 @@ public class ClientDTO {
 
         this.cards = client.getCards().stream().map(CardDTO::new).filter(cardDTO -> !cardDTO.getHidden()).collect(toSet());
         this.imgProfile = client.getImgProfile();
-
+        this.clientRole = client.getClientRole();
     }
 
     public long getId() {
@@ -99,4 +99,7 @@ public class ClientDTO {
         this.cards = cards;
     }
 
+    public String getClientRole() {
+        return clientRole;
+    }
 }
