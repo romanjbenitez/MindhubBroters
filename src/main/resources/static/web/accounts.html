@@ -221,7 +221,20 @@
                   <p>Pay Loans</p>
                 </div>
               </div>
-             
+              <div v-if="clientRole === 'ADMIN'" class="container-gray scale-up-center delayFour">
+               
+                  <p class="fs-3 font-one">Admin Panel</p>
+                  <a href="./create-loans.html" class="actions">
+                    <p>Do loans</p>
+                  </a>
+                  <a href="./manager.html"
+                    class="actions"
+                  >
+                    <p>Manage client</p>
+                  </a>
+              </div>
+         
+              </div>
             </div>
           </div>
           {{getToday}}

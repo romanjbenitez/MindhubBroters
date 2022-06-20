@@ -515,7 +515,7 @@ a:hover {
   }
 }
 .img{
-  background-image: url(./assets/img/fondo.jpg);
+  background-image: url(../assets/img/fondo.jpg);
   background-size: cover;
   
 }
