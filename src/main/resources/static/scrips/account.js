@@ -16,7 +16,10 @@ Vue.createApp({
       userProfille: null,
       charging: true,
       accountBalance : 0,
-      clientRole: ""
+      clientRole: "",
+      from: "",
+      to: "",
+      filterTransaction : [],
     };
   },
 
@@ -30,6 +33,7 @@ Vue.createApp({
         this.numbreOfAccount = this.account.number;
         this.accountID = this.account.id;
         this.transactions = this.account.transactions;
+        this.filterTransaction = this.transactions;
         this.accountBalance = this.account.balance;
       })
       .catch((err) => console.log(err));
@@ -139,9 +143,34 @@ Vue.createApp({
         }
       })
 
+    },
+    formatDate(date) {
+      let newDate = date.split("T")[0];
+      let time = date.split("T")[1].split(".")[0];
+      return newDate + " at " + time;
+    },
+    downloadPDF(){
+      const urlParams = new URLSearchParams(window.location.search)
+      let id = urlParams.get("id").toString();
+      let from1 = this.from.split("T")[0].split("-").reverse().join("-")
+      let from2 = this.from.split("T")[1]
+      let finalFrom = from1 + " " + from2
+      let to1 = this.to.split("T")[0].split("-").reverse().join("-")
+      let to2 = this.to.split("T")[1]
+      let finalTo = to1 + " " + to2
+
+      axios.post("/api/pdf/account",`from=${finalFrom}&to=${finalTo}&id=${id}`,
+      { responseType: 'blob' }, 
+      {headers:{"Content-type": "application/pdf" }})
+      .then((res) => {
+        let fileURL = window.URL.createObjectURL(new Blob([res.data]));
+        let fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', `receiptAccountNumber${this.numbreOfAccount}.pdf`);
+        document.body.appendChild(fileLink);
+        fileLink.click();
+      })
     }
-
-
   },
 
   computed: {
@@ -151,5 +180,20 @@ Vue.createApp({
       this.year = date.getFullYear();
       this.month = date.toDateString().split(" ")[1];
     },
+    filterTrasactions(){
+      if(this.to !== "" && this.from !== ""){
+        let from = new Date(this.from)
+        let to = new Date(this.to.replace(this.to.slice(9), parseInt(this.to.slice(9))+1))
+        console.log(this.from)
+        console.log(this.to)
+        this.filterTransaction = this.transactions.filter((transaction) => {
+          let transactionDate = new Date(transaction.date);
+          return transactionDate >= from && transactionDate <= to
+        })
+      }else{
+        this.filterTransaction = this.transactions;
+      }
+    }
+
   },
 }).mount("#app");

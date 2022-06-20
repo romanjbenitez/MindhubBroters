@@ -16,27 +16,7 @@
   </head>
   <body>
     <div id="app">
-      <div v-if="charging===true">
-        <div class="preloader--container fade-out500">
-          <div class="preloader heartbeat">
-            <img
-              src="../assets/img/Logo.png"
-              class="w-100 h-100 p-3"
-              alt="logo"
-            />
-          </div>
-          <div class="spinner">
-            <span>L</span>
-            <span>O</span>
-            <span>A</span>
-            <span>D</span>
-            <span>I</span>
-            <span>N</span>
-            <span>G</span>
-          </div>
-        </div>
-      </div>
-      <div v-else class="d-flex container-sections">
+      <div class="d-flex container-sections">
         <nav class="d-flex">
           <div class="container-img d-flex justify-content-center">
             <img src="../assets/img/Logo.png" alt="logo" srcset="" id="logo" />
@@ -98,9 +78,7 @@
                   <p class="font-four mb-1 fw-bold h6">$ {{account.balance}}</p>
                   <div class="d-flex flex-column">
                     <small class="font-five m-0 fs-6">{{account.number}}</small>
-                    <small class="font-five m-0 fs-6"
-                      >{{account.accountType}}</small
-                    >
+                    <small class="font-five m-0 fs-6">{{account.accountType}}</small>
                   </div>
                 </div>
                 <div v-else class="safe-info">
@@ -110,15 +88,7 @@
               </a>
             </div>
           </div>
-          <div
-            class="d-flex h-100 align-items-end flex-column justify-content-end none"
-          >
-            <input
-              class="button mb-3"
-              type="button"
-              @click="deleteAccount"
-              value="Delete this account"
-            />
+          <div class="d-flex h-100 align-items-end none">
             <input
               class="button"
               type="button"
@@ -127,71 +97,55 @@
             />
           </div>
         </aside>
-        <main>
-          <div class="d-flex justify-content-between">
-            <h2 class="font-one">Account Number : {{numbreOfAccount}}</h2>
-            <div class="user-card">
-              <i class="fa-regular fa-bell bell font-two"></i>
-              <div class="client-card">
-                <i
-                  v-if="userProfille == null"
-                  class="font-one fa-regular fa-circle-user"
-                ></i>
-                <img
-                  v-else
-                  :src="userProfille"
-                  class="rounded-circle imgProflie"
-                />
-                <div class="d-flex flex-column">
-                  <span class="font-one fw-bold">{{firstName}}</span>
-                  <span class="font-two">{{clientRole}} </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <span class="font-two">Today, {{day}} {{month}} {{year}} </span>
-          <div class="container-gray w-100">
-            <div>
-              <h3 class="font-one">Recent Transactions</h3>
-              <label for="">Filter by time</label>
-              <label for="from">From</label>
-              <input type="datetime-local" name="" id="from" v-model="from">
-              <label for="to">To</label>
-              <input type="datetime-local" name="" id="to" v-model="to">
-              <input type="button" value="Download receipt" @click="downloadPDF">
-            </div>
+        <main class="img">
+          <h2 class="font-one">Settings</h2>
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="container-gray w-50 h-75 d-flex flex-column align-items-center justify-content-center">
+                  <img
+                    v-if="userProfille != null"
+                    :src="userProfille"
+                    class="imgProflie"
+                  />
 
-            <div class="scrolSingle">
-              <div v-for="transaction in filterTransaction" class="transaction">
-                <i class="fa-solid fa-money-bill-transfer font-one"></i>
-                <div>
-                  <p class="font-one m-0 p-0 font-two">
-                    {{transaction.description}}
-                  </p>
-                  <span class="m-0 p-0 font-two">
-                    {{formatDate(transaction.date)}}
-                  </span>
-                </div>
-                <div>
-                  <p class="m-0 p-0 text-center font-one fs-4">
-                    {{transaction.amount}}
-                  </p>
-                  <div
-                    class="m-0 state text-center"
-                    :class="transaction.type == 'CREDIT' ? 'green' : 'red' "
-                  >
-                    {{transaction.type.charAt(0).toUpperCase() +
-                    transaction.type.slice(1)}}
+                  <i v-else class="font-one fa-regular fa-circle-user fontSizeProfile"></i>
+                  <div class="file-input">
+                    <input
+                    type="file"
+                    id="filechooser"
+                    accept="image/jpeg"
+                    class="file"
+                    v-on:change="getImg"
+                  />
+                  
+                  <label class="button"for="filechooser">
+                    Change profile image
+                  </label>
+                  </div>
+                  <div class="w-100">
+                    <div class="group">
+                      <input required="" type="text" class="input" v-model="newFirstName">
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label>{{firstName}}</label>
+                    </div>
+                    <div class="group">
+                      <input required="" type="text" class="input" v-model="newLastName">
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label>{{lastName}}</label>
+                    </div>
+                  </div>
+                  <div class="w-50"><input class="w-100  saveChanges"type="button" value="Save changes" @click="saveChanges"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+         
         </main>
       </div>
-      {{filterTrasactions}}
-      {{getToday}}
     </div>
+
     <script
       src="https://kit.fontawesome.com/2544a6d2ae.js"
       crossorigin="anonymous"
@@ -204,6 +158,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../scrips/account.js"></script>
+    <script src="../scrips/settings.js"></script>
   </body>
 </html>

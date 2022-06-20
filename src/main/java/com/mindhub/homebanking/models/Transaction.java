@@ -84,4 +84,8 @@ public class Transaction {
     public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
     }
+
+    public Account getAccount() {
+        return account;
+    }
 }

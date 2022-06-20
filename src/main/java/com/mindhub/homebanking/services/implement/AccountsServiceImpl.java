@@ -29,6 +29,11 @@ public class AccountsServiceImpl implements AccountsService {
     }
 
     @Override
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public Set<String> getNumbersOfAccount() {
         return accountRepository.findAll().stream().map(Account::getNumber).collect(Collectors.toSet());
     }

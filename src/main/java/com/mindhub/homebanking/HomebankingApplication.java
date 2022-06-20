@@ -92,7 +92,6 @@ public class HomebankingApplication {
             client2.addCard(cardThree);
             account3.addTransaction(transaction4);
 
-
             repository.save(melba);
             repository.save(client2);
             repository2.save(account1);
@@ -115,6 +114,7 @@ public class HomebankingApplication {
             repository6.save(cardThree);
         };
     }
+
 
 }
 
