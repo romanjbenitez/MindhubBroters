@@ -47,7 +47,6 @@ Vue.createApp({
         this.lastName = api.data.lastName;
         this.email = api.data.email;
         this.loans = api.data.loans;
-
         this.income = this.transactions == null ? 0 : this.transactions.filter((transaction) => transaction.type == "CREDIT").reduce((acc, item) => { return acc + item.amount; }, 0);
         this.expense = this.transactions == null ? 0 : this.transactions.filter((transaction) => transaction.type == "DEBIT").reduce((acc, item) => { return acc + item.amount; }, 0);
         this.loanToPay = this.loans.reduce((acc, item) => {

@@ -239,9 +239,7 @@
           </div>
           {{getToday}}
         </main>
-      </div>
-
-      <div
+        <div
         class="modal fade"
         id="exampleModal"
         tabindex="-1"
@@ -263,6 +261,7 @@
             </div>
             <div class="modal-body">
               <div v-if="loans.length > 0">
+      
                 <div v-for="loan in loans" class="transaction">
                   <div>
                     <p class="m-0 font-one">Loan</p>
@@ -279,6 +278,7 @@
                   </div>
                 </div>
               </div>
+              
               <div v-else>
                 <div class="transaction">
                   <div>
@@ -317,7 +317,9 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
+
+    
     <script
       src="https://kit.fontawesome.com/2544a6d2ae.js"
       crossorigin="anonymous"

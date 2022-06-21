@@ -117,7 +117,6 @@ public class AccountsController {
         LocalDateTime toFormat = LocalDateTime.parse(to,formatter);
         Client clientAuth = clientService.getCurrentClient(authentication);
         Account currentAccount = accountsService.getAccountById(id);
-        System.out.println(transactionService.getTransactionsBetweenDates(fromFormat, toFormat));
         List<Transaction> listTransfers = transactionService.getTransactionsBetweenDates(fromFormat, toFormat).stream().filter(transaction -> transaction.getAccount().getId() == id).collect(Collectors.toList());
 
         if(toFormat.isAfter(LocalDateTime.now().plusHours(5))|| fromFormat.isAfter(LocalDateTime.now().plusHours(5))){
