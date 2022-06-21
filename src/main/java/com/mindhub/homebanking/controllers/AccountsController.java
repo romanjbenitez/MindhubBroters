@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -108,10 +111,13 @@ public class AccountsController {
 
             response.setContentType("application/pdf");
 
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+        String currentDateTime = dateFormatter.format(new Date());
+
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm", Locale.ENGLISH);
-        String currentTime = LocalDateTime.now().toString();
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=mbb_tr_" + currentTime + ".pdf";
+        String headerValue = "attachment; filename=mbb_tr_" + currentDateTime + ".pdf";
 
         response.setHeader(headerKey, headerValue);
 
