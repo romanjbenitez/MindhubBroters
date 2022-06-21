@@ -165,12 +165,16 @@ Vue.createApp({
       { responseType: 'blob' }, 
       {headers:{"Content-type": "application/pdf" }})
       .then((res) => {
-        let fileURL = window.URL.createObjectURL(new Blob([res.data]));
-        let fileLink = document.createElement('a');
-        fileLink.href = fileURL;
-        fileLink.setAttribute('download', `receiptAccountNumber${this.numbreOfAccount}.pdf`);
-        document.body.appendChild(fileLink);
-        fileLink.click();
+        let disposition = res.headers['content-disposition']
+        let filename = decodeURI(disposition.substring(21))
+        let blob = new Blob([res.data], {type: 'application/pdf'});
+        let objectUrl = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = objectUrl;
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        
       })
     }
   },
