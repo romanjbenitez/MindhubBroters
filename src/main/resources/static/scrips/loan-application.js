@@ -35,7 +35,7 @@ Vue.createApp({
         this.clientLoans = api.data.loans;
       })
       .catch((err) => console / log(err));
-    axios.get("http://localhost:8080/api/loans").then((api) => {
+    axios.get("/api/loans").then((api) => {
       this.loans = api.data;
       this.loansForCurrentClient = this.loans.filter((loan) => {
         let response = this.clientLoans.find((clientLoan) => {
