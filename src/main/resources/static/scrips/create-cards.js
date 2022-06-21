@@ -17,7 +17,7 @@ Vue.createApp({
 
   created() {
     axios
-      .get("http://localhost:8080/api/clients/current")
+      .get("/api/clients/current")
       .then((api) => {
         this.accounts = api.data.accounts.sort((a, b) => a.id - b.id);
         this.lastName = api.data.lastName;
@@ -126,7 +126,7 @@ Vue.createApp({
               })
               .then((response) => {
                 axios
-                  .get("http://localhost:8080/api/clients/current")
+                  .get("/api/clients/current")
                   .then(
                     (api) =>
                       (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))

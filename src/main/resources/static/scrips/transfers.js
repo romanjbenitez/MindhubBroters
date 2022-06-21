@@ -11,13 +11,13 @@ Vue.createApp({
       destinationAccount: "",
       amount: 0,
       description: "",
-      urlAccount: "http://localhost:8080/web/account.html?id=",
+      urlAccount: "https://mhb-online-banking.herokuapp.com/web/account.html?id=",
     };
   },
 
   created() {
     axios
-      .get("http://localhost:8080/api/clients/current")
+      .get("/api/clients/current")
       .then((api) => {
         this.accounts = api.data.accounts.sort((a, b) => a.id - b.id);
         this.balance = this.accounts
@@ -107,7 +107,7 @@ Vue.createApp({
               })
               .then((response) => {
                 axios
-                  .get("http://localhost:8080/api/clients/current")
+                  .get("/api/clients/current")
                   .then(
                     (api) =>
                       (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))

@@ -11,7 +11,7 @@ Vue.createApp({
 
     created() {
         axios
-            .get("http://localhost:8080/api/loans").then((api) => {
+            .get("/api/loans").then((api) => {
                 this.loans = api.data
                 console.log(this.loans)
             }).catch(err => console.log(err))
@@ -19,12 +19,12 @@ Vue.createApp({
 
     methods: {
         createLoan() {
-            axios.post("http://localhost:8080/api/loans/admin", `name=${this.name}&maxAmount=${this.maxAmount}&payments=${this.payments}&interestPercentage=${this.interestPercentage}`,
+            axios.post("/api/loans/admin", `name=${this.name}&maxAmount=${this.maxAmount}&payments=${this.payments}&interestPercentage=${this.interestPercentage}`,
                 {
                     headers: { "content-type": "application/x-www-form-urlencoded" },
                 }).then((res) => {
                     axios
-                        .get("http://localhost:8080/api/loans").then((api) => {
+                        .get("/api/loans").then((api) => {
                             this.loans = api.data
                         }).catch(err => console.log(err))
                 }).catch(err => console.log(err))

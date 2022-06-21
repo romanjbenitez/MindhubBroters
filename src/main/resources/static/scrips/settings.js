@@ -1,7 +1,7 @@
 Vue.createApp({
   data() {
     return {
-      urlAccount: "http://localhost:8080/web/account.html?id=",
+      urlAccount: "https://mhb-online-banking.herokuapp.com/web/account.html?id=",
       firstName: "",
       lastName: "",
       email: "",
@@ -18,7 +18,7 @@ Vue.createApp({
 
   created() {
     axios
-      .get("http://localhost:8080/api/clients/current")
+      .get("/api/clients/current")
       .then((api) => {
         this.firstName = api.data.firstName;
         this.accounts = api.data.accounts.sort((a, b) => a.id - b.id);
@@ -73,7 +73,7 @@ Vue.createApp({
               })
               .then((response) => {
                 axios
-                  .get("http://localhost:8080/api/clients/current")
+                  .get("/api/clients/current")
                   .then(
                     (api) =>
                       (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
@@ -102,7 +102,7 @@ Vue.createApp({
       axios
         .post("/api/clients/settings", data, config)
         .then((res) => {
-          axios.get("http://localhost:8080/api/clients/current").then((api) => {
+          axios.get("/api/clients/current").then((api) => {
             this.userProfille =
               "../assets/usersProfiles/" + api.data.imgProfile;
           });
@@ -110,7 +110,7 @@ Vue.createApp({
         .catch((err) => console.log(err));
     },
     saveChanges() {
-      axios.patch("http://localhost:8080/api/clients/current/update", `firstName=${this.newFirstName}&lastName=${this.newLastName}`, { headers: { "content-type": "application/x-www-form-urlencoded" } }).then(res => {
+      axios.patch("/api/clients/current/update", `firstName=${this.newFirstName}&lastName=${this.newLastName}`, { headers: { "content-type": "application/x-www-form-urlencoded" } }).then(res => {
         console.log("success")
       })
     },

@@ -7,7 +7,7 @@ Vue.createApp({
       accountID: "",
       accounts: [],
       hide: "hide",
-      urlAccount: "http://localhost:8080/web/account.html?id=",
+      urlAccount: "https://mhb-online-banking.herokuapp.com/web/account.html?id=",
       balance: 0,
       day: 0,
       month: "",
@@ -27,7 +27,7 @@ Vue.createApp({
     const urlParams = new URLSearchParams(window.location.search);
     const paramsID = urlParams.get("id");
     axios
-      .get(`http://localhost:8080/api/accounts/${paramsID}`)
+      .get(`/api/accounts/${paramsID}`)
       .then((api) => {
         this.account = api.data;
         this.numbreOfAccount = this.account.number;
@@ -38,7 +38,7 @@ Vue.createApp({
       })
       .catch((err) => console.log(err));
     axios
-      .get("http://localhost:8080/api/clients/current")
+      .get("/api/clients/current")
       .then((api) => {
         this.firstName = api.data.firstName;
         this.clientRole = api.data.clientRole
@@ -70,7 +70,7 @@ Vue.createApp({
         })
         .catch((err) => console.log(err));
       axios
-        .get("http://localhost:8080/api/clients/current")
+        .get("/api/clients/current")
         .then(
           (api) =>
             (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
@@ -107,7 +107,7 @@ Vue.createApp({
               })
               .then((response) => {
                 axios
-                  .get("http://localhost:8080/api/clients/current")
+                  .get("/api/clients/current")
                   .then(
                     (api) =>
                       (this.accounts = api.data.accounts.sort((a, b) => a.id - b.id))
