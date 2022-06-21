@@ -150,7 +150,9 @@ Vue.createApp({
       return newDate + " at " + time;
     },
     downloadPDF(){
+
       const urlParams = new URLSearchParams(window.location.search)
+      
       let id = urlParams.get("id").toString();
       let from1 = this.from.split("T")[0].split("-").reverse().join("-")
       let from2 = this.from.split("T")[1]

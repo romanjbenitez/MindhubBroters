@@ -13,6 +13,7 @@ import com.mindhub.homebanking.models.Transaction;
 import com.mindhub.homebanking.services.AccountsService;
 import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.services.TransactionService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -107,11 +107,15 @@ public class AccountsController {
         }
 
             response.setContentType("application/pdf");
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=mbb_tr_" + LocalDateTime.now() + ".pdf";
-        response.setHeader(headerKey, headerValue);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm", Locale.ENGLISH);
+        String currentTime = LocalDateTime.now().toString();
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=mbb_tr_" + currentTime + ".pdf";
+
+        response.setHeader(headerKey, headerValue);
+
+
 
         LocalDateTime fromFormat = LocalDateTime.parse(from, formatter);
         LocalDateTime toFormat = LocalDateTime.parse(to,formatter);
